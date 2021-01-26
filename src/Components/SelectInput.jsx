@@ -10,31 +10,17 @@ class SelectInput extends Component {
 				<select
 					style={this.styles.select}
 					onChange={(event) => this.props.onSelectChange(event)}
+					value={this.props.selected}
 				>
-					{this.createSelectOptions(this.props.options, this.props.selected)}
+					{this.props.options.map((option) => (
+						<option key={option} value={option}>
+							{option}
+						</option>
+					))}
 				</select>
 			</div>
 		);
 	}
-
-	createSelectOptions = (options, selected) => {
-		const selectOptions = options.map((option) => {
-			if (selected === option.id) {
-				return (
-					<option key={option.id} value={option.id} selected>
-						{option.name}
-					</option>
-				);
-			} else {
-				return (
-					<option key={option.id} value={option.id}>
-						{option.name}
-					</option>
-				);
-			}
-		});
-		return selectOptions;
-	};
 
 	styles = {
 		selectBlock: {

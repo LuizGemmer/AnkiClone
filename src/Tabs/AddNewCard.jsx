@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 
-import { withTheme, Button } from "@material-ui/core";
+import { withTheme } from "@material-ui/core";
 import TextInput from "../Components/TextInput";
 import SelectInput from "../Components/SelectInput";
+import AddButton from "../Components/AddButton";
 
 class AddNewCard extends Component {
 	render() {
@@ -12,7 +13,7 @@ class AddNewCard extends Component {
 					<SelectInput
 						label="Deck"
 						options={this.state.decks}
-						selected={this.state.form.deck}
+						selected={this.state.form.selected}
 						onSelectChange={this.handleSelectChange}
 					/>
 				</div>
@@ -25,13 +26,7 @@ class AddNewCard extends Component {
 						/>
 					))}
 				</div>
-				<Button
-					variant="contained"
-					onClick={this.handleAddCard}
-					color="primary"
-				>
-					Add Card
-				</Button>
+				<AddButton onClick={this.handleAddCard} label="Add Card" />
 			</div>
 		);
 	}
@@ -39,24 +34,23 @@ class AddNewCard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			decks: [
-				{ id: 1, name: "Dummy deck 1" },
-				{ id: 2, name: "Dummy deck 2" },
-				{ id: 3, name: "Dummy deck 3" },
-			],
+			decks: ["Dummy deck 1", "Dummy deck 2", "Dummy deck 3"],
 			form: {
-				deck: 0,
 				textFields: [
 					{ name: "Front", value: "" },
 					{ name: "Back", value: "" },
 				],
 			},
 		};
+		// Set initial selected value to the first deck in the decks array
+		if (!this.state.form["selected"]) {
+			this.state.form["selected"] = this.state.decks[0];
+		}
 	}
 
 	handleSelectChange = (event) => {
 		let newState = this.state.form;
-		newState.select = event.target.value;
+		newState.selected = event.target.value;
 		this.setState(newState);
 	};
 
@@ -74,14 +68,8 @@ class AddNewCard extends Component {
 
 	// Creates a cardObject and sends it to the main process (not really :d)
 	handleAddCard = () => {
-		// In case the user did not selected an option in the select input,
-		// puts the card in the first deck
-		const deck = (this.state.form.deck = 0
-			? this.state.decks[0]
-			: this.state.form.deck);
-
 		const cardObject = {
-			deck,
+			deck: this.state.form.selected,
 			type: "Basic Card", // Feature to be implemented
 			fields: this.state.form.textFields,
 		};

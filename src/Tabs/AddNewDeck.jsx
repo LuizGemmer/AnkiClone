@@ -15,7 +15,7 @@ export default class AddNewDeck extends Component {
 				<SelectInput
 					label="Deck Configuration"
 					onSelectChange={this.handleSelectChange}
-					Selected={this.state.form.select}
+					Selected={this.state.form.selected}
 					options={this.state.deckConfigurations}
 				/>
 				<AddButton label="Add Deck" onClick={this.handleAddDeck} />
@@ -26,21 +26,21 @@ export default class AddNewDeck extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			deckConfigurations: [
-				{ name: "Dummy 1", id: 1 },
-				{ name: "Dummy 2", id: 2 },
-			],
+			deckConfigurations: ["Dummy 1", "Dummy 2"],
 			form: {
 				textInput: { name: "Deck Name", value: "" },
-				select: 0,
 			},
 		};
+		// Set initial selected value to the first config in the deckConfig array
+		if (!this.state.form["selected"]) {
+			this.state.form["selected"] = this.state.deckConfigurations[0];
+		}
 	}
 
 	// Handle changes in the select input type in the "form"
 	handleSelectChange = (event) => {
 		let newState = this.state.form;
-		newState.select = event.target.value;
+		newState.selected = event.target.value;
 		this.setState(newState);
 	};
 
@@ -48,14 +48,10 @@ export default class AddNewDeck extends Component {
 	// and sends it to the main process (not really :D )
 	handleAddDeck = () => {
 		let formData = this.state.form;
-		let deckConfigurationId =
-			formData.select === 0
-				? this.state.deckConfigurations[0].id
-				: formData.select;
 
 		const deckObject = {
 			name: formData.textInput.value,
-			deckConfigurationId,
+			deckConfiguration: formData.selected,
 		};
 		console.log(deckObject);
 	};
