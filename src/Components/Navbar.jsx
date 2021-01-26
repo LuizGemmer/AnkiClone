@@ -2,8 +2,8 @@ import React from "react";
 
 import { Paper, Tabs, Tab } from "@material-ui/core";
 
-export default function navbar(props) {
-	const { value, handleChange } = props;
+export default function Navbar(props) {
+	const { value, handleChange, tabs } = props;
 
 	return (
 		<Paper square elevation={3}>
@@ -14,7 +14,7 @@ export default function navbar(props) {
 				textColor="primary"
 				centered
 			>
-				{props.tabs.map((tab) => (
+				{tabs.map((tab) => (
 					<Tab label={tab.name} key={tab.name} />
 				))}
 			</Tabs>
