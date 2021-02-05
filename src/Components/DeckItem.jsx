@@ -3,13 +3,16 @@ import React from "react";
 import { ButtonBase } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 
+import { channels } from "../Channels";
+
+const { ipcRenderer } = window.require("electron");
+
 export default function DeckItem(props) {
 	const theme = useTheme();
 	const styles = createStyles(theme);
 
 	const openReviewTab = () => {
-		console.log("still not implemented");
-		console.log("deck id: ", props.deck.id);
+		ipcRenderer.send(channels.FORCE_REDIRECT, props.deck.name);
 	};
 
 	return (

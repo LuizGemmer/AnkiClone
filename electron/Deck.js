@@ -21,16 +21,15 @@ class Deck {
 		return this.cards.length - this.newCardsCount;
 	}
 
-	// not tested
 	getReviewCards() {
-		// Get all the cards the user is supossed to review
 		const reviewCards = [];
-		for (let i = 0; i < this.cards.length; i++) {
-			let card = this.cards[i];
 
-			if (card.shouldBeReviewed()) {
+		// Removes the cards from the this.cards property and
+		// add them to the review cards, if the card should be reviewed.
+		for (let index in this.cards) {
+			if (this.cards[index].shouldBeReviewed()) {
+				const card = this.cards.splice(index, 1);
 				reviewCards.push(card);
-				this.cards.splice(i); // Will make it easier to add the reviewed cards back.
 			}
 		}
 		return reviewCards;

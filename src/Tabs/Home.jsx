@@ -4,6 +4,9 @@ import { withTheme } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 
 import DeckItem from "../Components/DeckItem";
+import { channels } from "../Channels";
+
+const { ipcRenderer } = window.require("electron");
 
 class Home extends Component {
 	render() {
@@ -15,16 +18,25 @@ class Home extends Component {
 					<span style={this.styles.center}>New</span>
 				</div>
 				<Divider />
-				<DeckItem styles={this.styles.gridItem} deck={this.dummyDeck} />
+				{this.state.decks.map((deck) => (
+					<DeckItem styles={this.styles.gridItem} deck={deck} key={deck.name} />
+				))}
 			</div>
 		);
 	}
 
-	dummyDeck = {
-		id: 1,
-		name: "Dummy deck",
-		due: 33,
-		new: 10,
+	constructor(props) {
+		super(props);
+		this.decks = this.getDecks();
+		this.state = {
+			decks: this.decks,
+		};
+	}
+
+	getDecks = () => {
+		if (!this.state) {
+			return ipcRenderer.sendSync(channels.GET_DECKS_NAMES_DUE_NEW);
+		}
 	};
 
 	styles = {

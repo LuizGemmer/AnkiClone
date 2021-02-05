@@ -62,6 +62,12 @@ class Collection {
 		return cards;
 	}
 
+	getDeckByName(name) {
+		for (let deck of this.decks) {
+			if (deck.name === name) return deck;
+		}
+	}
+
 	saveToDisk() {
 		for (let deck of this.decks) {
 			let saveInfo = deck.getSaveInfo();
