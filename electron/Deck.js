@@ -1,4 +1,5 @@
 const fs = require("fs");
+const { Card } = require("./Card");
 
 class Deck {
 	constructor(cardList, deckProperties) {
@@ -41,9 +42,10 @@ class Deck {
 		this.cards.push.apply(reviewCards);
 	}
 
-	// not tested
-	addNewCard(newCard) {
-		this.cards.unshift(newCard);
+	addNewCard(cardObject) {
+		const card = new Card(cardObject);
+		this.cards.unshift(card);
+		this.newCardsCount++;
 	}
 
 	getSaveInfo() {

@@ -5,6 +5,9 @@ import TextInput from "../Components/TextInput";
 import SelectInput from "../Components/SelectInput";
 import AddButton from "../Components/AddButton";
 
+import { channels } from "../Channels";
+const { ipcRenderer } = window.require("electron");
+
 class AddNewCard extends Component {
 	render() {
 		return (
@@ -22,7 +25,7 @@ class AddNewCard extends Component {
 						<TextInput
 							field={field}
 							key={field.name}
-							liftUpInput={this.updateTextFieldValue}
+							onChange={this.handleInputChange}
 						/>
 					))}
 				</div>
@@ -34,7 +37,7 @@ class AddNewCard extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
-			decks: ["Dummy deck 1", "Dummy deck 2", "Dummy deck 3"],
+			decks: getDecks(),
 			form: {
 				textFields: [
 					{ name: "Front", value: "" },
@@ -46,6 +49,10 @@ class AddNewCard extends Component {
 		if (!this.state.form["selected"]) {
 			this.state.form["selected"] = this.state.decks[0];
 		}
+
+		function getDecks() {
+			return ipcRenderer.sendSync(channels.GET_DECKS);
+		}
 	}
 
 	handleSelectChange = (event) => {
@@ -54,27 +61,33 @@ class AddNewCard extends Component {
 		this.setState(newState);
 	};
 
-	// Creates a new deck object based on the user's input
-	// and sends it to the main process (not really :D )
-	updateTextFieldValue = (value, fieldName) => {
-		const newState = this.state.form.textFields;
-		newState.forEach((input) => {
-			if (input.name === fieldName) {
-				input.value = value;
+	handleInputChange = (event, fieldName) => {
+		const newState = this.state.form;
+		newState.textFields.forEach((field) => {
+			if (field.name === fieldName) {
+				field.value = event.target.value;
 			}
 		});
 		this.setState(newState);
 	};
 
-	// Creates a cardObject and sends it to the main process (not really :d)
+	// Creates a card object and sends it to the main process (not really :d)
 	handleAddCard = () => {
 		const cardObject = {
 			deck: this.state.form.selected,
 			type: "Basic Card", // Feature to be implemented
 			fields: this.state.form.textFields,
 		};
-		console.log(cardObject);
+
+		ipcRenderer.send(channels.ADD_NEW_CARD, cardObject);
+		this.resetFieldsValues();
 	};
+
+	resetFieldsValues() {
+		const newState = this.state.form;
+		newState.textFields.forEach((field) => (field.value = ""));
+		this.setState({ newState });
+	}
 
 	styles = {
 		selectField: {
