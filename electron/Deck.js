@@ -3,15 +3,28 @@ const { Card } = require("./Card");
 
 class Deck {
 	constructor(cardList, deckProperties) {
-		this.cards = cardList;
+		this.cards = this.getCardTree(cardList);
 		this.name = deckProperties.name;
 		this.newCardsCount = this.card !== [] ? this.getNewCardsCount() : 0;
 		this.dueCardsCount = this.card !== [] ? this.getDueCardsCount() : 0;
 	}
 
+	getCardTree(cardList) {
+		const cards = {};
+		for (let card of cardList) {
+			cards[card.id] = card;
+		}
+		console.dir(cards);
+		return cards;
+	}
+
+	Cards() {
+		return Object.values(this.cards);
+	}
+
 	getNewCardsCount() {
 		let count = 0;
-		for (let card of this.cards) {
+		for (let card of this.Cards()) {
 			if (card.isNew()) count++;
 			else break; // the list of cards is sorted so that the new ones are the first ones.
 		}
@@ -19,17 +32,14 @@ class Deck {
 	}
 
 	getDueCardsCount() {
-		return this.cards.length - this.newCardsCount;
+		return this.Cards().length - this.newCardsCount;
 	}
 
 	getReviewCards() {
 		const reviewCards = [];
 
-		// Removes the cards from the this.cards property and
-		// add them to the review cards, if the card should be reviewed.
-		for (let index in this.cards) {
-			if (this.cards[index].shouldBeReviewed()) {
-				const card = this.cards.splice(index, 1);
+		for (let card of this.Cards()) {
+			if (card.shouldBeReviewed()) {
 				reviewCards.push(card);
 			}
 		}
@@ -38,13 +48,14 @@ class Deck {
 
 	// not tested
 	finishReviewSession(reviewCards) {
-		// Take the reviewed cards and add them back to the deck
-		this.cards.push.apply(reviewCards);
+		reviewCards.forEach((card) => {
+			this.cards[card.id] = card;
+		});
 	}
 
 	addNewCard(cardObject) {
 		const card = new Card(cardObject);
-		this.cards.unshift(card);
+		this.Cards().unshift(card);
 		this.newCardsCount++;
 	}
 
