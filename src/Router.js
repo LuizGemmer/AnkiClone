@@ -8,24 +8,23 @@ import Home from "./Tabs/Home";
 import Review from "./Tabs/Review";
 import Navbar from "./Components/Navbar";
 
-import { channels } from "./Channels";
-const { ipcRenderer } = window.require("electron");
-
 export default function Router() {
 	const [tab, setTab] = useState(0);
 	const [reviewTab, setReviewTab] = useState({ show: false });
+
 	const tabs = [
-		{ name: "Home", component: <Home /> },
+		{
+			name: "Home",
+			component: (
+				<Home openReviewTab={(deck) => setReviewTab({ show: true, deck })} />
+			),
+		},
 		{ name: "Add", component: <Add /> },
 	];
 
-	ipcRenderer.on(channels.REDIRECT, (args) => {
-		setReviewTab({ show: true, reviewCards: args });
-	});
-
 	const getTab = () => {
 		if (reviewTab.show) {
-			return <Review cards={reviewTab.reviewCards} />;
+			return <Review deck={reviewTab.deck} />;
 		}
 		return tabs[tab].component;
 	};

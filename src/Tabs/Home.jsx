@@ -19,7 +19,12 @@ class Home extends Component {
 				</div>
 				<Divider />
 				{this.state.decks.map((deck) => (
-					<DeckItem styles={this.styles.gridItem} deck={deck} key={deck.name} />
+					<DeckItem
+						styles={this.styles.gridItem}
+						deck={deck}
+						key={deck.name}
+						onClick={this.props.openReviewTab}
+					/>
 				))}
 			</div>
 		);

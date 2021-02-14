@@ -3,20 +3,15 @@ import React from "react";
 import { ButtonBase } from "@material-ui/core";
 import { useTheme } from "@material-ui/core/styles";
 
-import { channels } from "../Channels";
-
-const { ipcRenderer } = window.require("electron");
-
 export default function DeckItem(props) {
 	const theme = useTheme();
 	const styles = createStyles(theme);
 
-	const openReviewTab = () => {
-		ipcRenderer.send(channels.FORCE_REDIRECT, props.deck.name);
-	};
-
 	return (
-		<ButtonBase onClick={openReviewTab} style={props.styles}>
+		<ButtonBase
+			onClick={() => props.onClick(props.deck.name)}
+			style={props.styles}
+		>
 			<span style={styles.deckName}>{props.deck.name}</span>
 			<span style={styles.due}>{props.deck.due}</span>
 			<span style={styles.new}>{props.deck.new}</span>

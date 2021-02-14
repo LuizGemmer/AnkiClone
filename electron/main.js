@@ -63,13 +63,6 @@ ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
 	e.returnValue = returnValue;
 });
 
-ipcMain.on(channels.FORCE_REDIRECT, (e, deckName) => {
-	const deck = collection.getDeckByName(deckName);
-	const reviewCards = deck.getReviewCards();
-
-	win.webContents.send(channels.REDIRECT, reviewCards);
-});
-
 ipcMain.on(channels.GET_DECKS, (e) => {
 	const decks = collection.decks.map((deck) => deck.name);
 	e.returnValue = decks;
@@ -85,4 +78,9 @@ ipcMain.on(channels.ADD_NEW_CARD, (e, cardObject) => {
 
 ipcMain.on(channels.ADD_NEW_DECK, (e, deckObject) => {
 	collection.addNewDeck(deckObject);
+});
+
+ipcMain.on(channels.GET_DUE_CARDS, (e, deckName) => {
+	const deck = collection.getDeckByName(deckName);
+	e.returnValue = deck.getReviewCards();
 });
