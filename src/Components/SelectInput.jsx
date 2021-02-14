@@ -8,8 +8,9 @@ class SelectInput extends Component {
 			<div style={this.styles.selectBlock}>
 				<span>{this.props.label}:</span>
 				<select
+					name={this.props.name}
 					style={this.styles.select}
-					onChange={(event) => this.props.onSelectChange(event)}
+					onChange={(event) => this.props.onChange(event)}
 					value={this.props.selected}
 				>
 					{this.props.options.map((option) => (

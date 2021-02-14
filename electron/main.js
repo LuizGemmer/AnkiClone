@@ -60,7 +60,6 @@ ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
 			new: deck.newCardsCount,
 		});
 	}
-	console.dir(returnValue);
 	e.returnValue = returnValue;
 });
 
@@ -81,7 +80,9 @@ ipcMain.on(channels.ADD_NEW_CARD, (e, cardObject) => {
 	cardId++;
 
 	const deck = collection.getDeckByName(cardObject.deck);
-	console.dir(deck.cards.length);
 	deck.addNewCard(cardObject);
-	console.dir(deck.cards.length);
+});
+
+ipcMain.on(channels.ADD_NEW_DECK, (e, deckObject) => {
+	collection.addNewDeck(deckObject);
 });

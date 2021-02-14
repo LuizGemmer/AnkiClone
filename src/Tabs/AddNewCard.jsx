@@ -1,95 +1,54 @@
-import React, { Component } from "react";
+import React from "react";
 
-import { withTheme } from "@material-ui/core";
 import TextInput from "../Components/TextInput";
 import SelectInput from "../Components/SelectInput";
 import AddButton from "../Components/AddButton";
 
+import useForm from "../useForm.js";
+import useIpc from "../useIpc.js";
 import { channels } from "../Channels";
-const { ipcRenderer } = window.require("electron");
 
-class AddNewCard extends Component {
-	render() {
-		return (
-			<div style={this.styles.container}>
-				<div style={this.styles.selectField}>
-					<SelectInput
-						label="Deck"
-						options={this.state.decks}
-						selected={this.state.form.selected}
-						onSelectChange={this.handleSelectChange}
-					/>
-				</div>
-				<div>
-					{this.state.form.textFields.map((field) => (
-						<TextInput
-							field={field}
-							key={field.name}
-							onChange={this.handleInputChange}
-						/>
-					))}
-				</div>
-				<AddButton onClick={this.handleAddCard} label="Add Card" />
-			</div>
-		);
-	}
+export default function AddNewCard(props) {
+	const { ipcConstructor, ipcSend } = useIpc(false);
+	const decks = ipcConstructor(channels.GET_DECKS);
+	const initialState = getInitialState(decks);
 
-	constructor(props) {
-		super(props);
-		this.state = {
-			decks: getDecks(),
-			form: {
-				textFields: [
-					{ name: "Front", value: "" },
-					{ name: "Back", value: "" },
-				],
-			},
-		};
-		// Set initial selected value to the first deck in the decks array
-		if (!this.state.form["selected"]) {
-			this.state.form["selected"] = this.state.decks[0];
-		}
-
-		function getDecks() {
-			return ipcRenderer.sendSync(channels.GET_DECKS);
-		}
-	}
-
-	handleSelectChange = (event) => {
-		let newState = this.state.form;
-		newState.selected = event.target.value;
-		this.setState(newState);
-	};
-
-	handleInputChange = (event, fieldName) => {
-		const newState = this.state.form;
-		newState.textFields.forEach((field) => {
-			if (field.name === fieldName) {
-				field.value = event.target.value;
-			}
-		});
-		this.setState(newState);
-	};
-
-	// Creates a card object and sends it to the main process (not really :d)
-	handleAddCard = () => {
+	// Sends the card to the main process
+	const addNewCard = () => {
 		const cardObject = {
-			deck: this.state.form.selected,
-			type: "Basic Card", // Feature to be implemented
-			fields: this.state.form.textFields,
+			deck: select.value,
+			type: "Basic Card",
+			fields: values.text,
 		};
-
-		ipcRenderer.send(channels.ADD_NEW_CARD, cardObject);
-		this.resetFieldsValues();
+		ipcSend(channels.ADD_NEW_CARD, cardObject);
 	};
 
-	resetFieldsValues() {
-		const newState = this.state.form;
-		newState.textFields.forEach((field) => (field.value = ""));
-		this.setState({ newState });
-	}
+	// Handle the form's basic functionalities
+	const { values, errors, handleChange, handleSubmit } = useForm(
+		initialState,
+		addNewCard
+	);
 
-	styles = {
+	const getTextInputs = () => {
+		const { text } = values;
+		const fields = [];
+
+		for (let field in text) {
+			fields.push(
+				<TextInput
+					name={field}
+					value={text[field]}
+					label={field}
+					onChange={handleChange}
+					error={errors[field] ? errors[field] : undefined}
+					key={field}
+				/>
+			);
+		}
+		return fields;
+	};
+
+	const styles = {
 		selectField: {
 			width: "100%",
 			display: "flex",
@@ -97,6 +56,28 @@ class AddNewCard extends Component {
 			marginBottom: "16px",
 		},
 	};
+
+	const select = values.select.Deck;
+	return (
+		<div>
+			<div style={styles.selectField}>
+				<SelectInput
+					name={select.name}
+					label={select.name}
+					options={select.options}
+					selected={select.value}
+					onChange={handleChange}
+				/>
+			</div>
+			<div>{getTextInputs()}</div>
+			<AddButton onClick={handleSubmit} label="Add Card" />
+		</div>
+	);
 }
 
-export default withTheme(AddNewCard);
+const getInitialState = (decks) => {
+	return {
+		select: { Deck: { name: "Deck", value: decks[0], options: decks } },
+		text: { Front: "", Back: "" },
+	};
+};

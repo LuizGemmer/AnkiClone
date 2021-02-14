@@ -6,54 +6,39 @@ class TextInput extends Component {
 	render() {
 		return (
 			<div style={this.styles.textBlock}>
-				<span style={this.state.hasError ? this.styles.errorText : {}}>
-					{this.state.hasError
-						? this.state.errorMessage + "!"
-						: this.props.field.name + ":"}
+				<span style={this.props.error ? this.styles.errorText : {}}>
+					{this.props.label}
 				</span>
 				<input
+					name={this.props.name}
 					type="text"
 					style={
-						this.state.hasError
+						this.props.error
 							? Object.assign({}, this.styles.textField, this.styles.errorField)
 							: this.styles.textField
 					}
-					value={this.props.field.value}
-					onChange={(event) =>
-						this.props.onChange(event, this.props.field.name)
-					}
-					onBlur={this.checkForErrors}
+					value={this.props.value}
+					onChange={(event) => this.props.onChange(event)}
 				/>
+				{this.props.error && (
+					<span style={this.styles.errorMessage}>{this.props.error}</span>
+				)}
 			</div>
 		);
 	}
-
-	constructor(props) {
-		super(props);
-		this.state = { hasError: false, errorMessage: "" };
-	}
-
-	checkForErrors = () => {
-		if (this.props.field.value === "") {
-			this.setState({
-				hasError: true,
-				errorMessage: `${this.props.field.name} cannot be empty`,
-			});
-			return;
-		}
-	};
 
 	// CSS
 	styles = {
 		textBlock: {
 			display: "flex",
 			flexDirection: "column",
+			marginBottom: "12px",
 		},
 		textField: {
 			width: "100%",
 			padding: "12px 12px",
 			boxSizing: "border-box",
-			margin: "6px 0px 12px 0px",
+			marginTop: "6px",
 
 			background: this.props.theme.palette.background.paper,
 			border: "none",
@@ -67,6 +52,11 @@ class TextInput extends Component {
 		},
 		errorField: {
 			borderBottom: `2px solid ${this.props.theme.palette.error.light}`,
+		},
+		errorMessage: {
+			color: this.props.theme.palette.error.light,
+			fontSize: "12px",
+			marginTop: "6px",
 		},
 	};
 }

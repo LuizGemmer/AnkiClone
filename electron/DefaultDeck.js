@@ -8,10 +8,10 @@ for (let i = 0; i < 100; i++) {
 		id: i,
 		deck: "Default Deck",
 		type: "Basic", // not implemented yet
-		fields: [
-			{ name: "Front", value: `garbage data front ${i}` },
-			{ name: "Back", value: `garbage data back ${i}` },
-		],
+		fields: {
+			front: `garbage data front ${i}`,
+			back: `garbage data back ${i}`,
+		},
 	};
 	DefaultDeck.cards.unshift(card);
 }

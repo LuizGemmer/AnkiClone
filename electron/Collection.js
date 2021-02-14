@@ -68,6 +68,11 @@ class Collection {
 		}
 	}
 
+	addNewDeck(deckObject) {
+		const deck = new Deck([], deckObject);
+		this.decks.push(deck);
+	}
+
 	saveToDisk() {
 		for (let deck of this.decks) {
 			let saveInfo = deck.getSaveInfo();

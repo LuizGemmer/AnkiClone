@@ -5,8 +5,8 @@ class Deck {
 	constructor(cardList, deckProperties) {
 		this.cards = cardList;
 		this.name = deckProperties.name;
-		this.newCardsCount = this.getNewCardsCount();
-		this.dueCardsCount = this.getDueCardsCount();
+		this.newCardsCount = this.card !== [] ? this.getNewCardsCount() : 0;
+		this.dueCardsCount = this.card !== [] ? this.getDueCardsCount() : 0;
 	}
 
 	getNewCardsCount() {
