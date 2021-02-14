@@ -14,7 +14,6 @@ class Deck {
 		for (let card of cardList) {
 			cards[card.id] = card;
 		}
-		console.dir(cards);
 		return cards;
 	}
 
