@@ -1,3 +1,4 @@
+const { Card } = require("@material-ui/core");
 const { app, BrowserWindow, ipcMain, webContents } = require("electron");
 
 const path = require("path");
@@ -53,6 +54,7 @@ app.on("activate", () => {
 
 ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
 	let returnValue = [];
+
 	for (let deck of collection.decks) {
 		returnValue.push({
 			name: deck.name,
@@ -83,4 +85,9 @@ ipcMain.on(channels.ADD_NEW_DECK, (e, deckObject) => {
 ipcMain.on(channels.GET_DUE_CARDS, (e, deckName) => {
 	const deck = collection.getDeckByName(deckName);
 	e.returnValue = deck.getReviewCards();
+});
+
+ipcMain.on(channels.SAVE_REVIEW, (e, card) => {
+	const deck = collection.getDeckByName(card.deck);
+	deck.saveReview(card);
 });

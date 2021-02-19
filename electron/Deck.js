@@ -1,4 +1,3 @@
-const fs = require("fs");
 const { Card } = require("./Card");
 
 class Deck {
@@ -25,13 +24,16 @@ class Deck {
 		let count = 0;
 		for (let card of this.Cards()) {
 			if (card.isNew()) count++;
-			else break; // the list of cards is sorted so that the new ones are the first ones.
 		}
 		return count;
 	}
 
 	getDueCardsCount() {
-		return this.Cards().length - this.newCardsCount;
+		let count = 0;
+		for (let card of this.Cards()) {
+			if (card.isDue()) count++;
+		}
+		return count - this.newCardsCount;
 	}
 
 	getReviewCards() {
@@ -46,10 +48,16 @@ class Deck {
 	}
 
 	// not tested
-	finishReviewSession(reviewCards) {
-		reviewCards.forEach((card) => {
-			this.cards[card.id] = card;
-		});
+	saveReview(cardObject) {
+		const card = new Card(cardObject);
+
+		if (card.isNew()) {
+			this.newCardsCount--;
+			if (card.ease === 0) this.dueCardsCount++;
+		} else this.dueCardsCount--;
+
+		card.doReview();
+		this.cards[card.id] = card;
 	}
 
 	addNewCard(cardObject) {
