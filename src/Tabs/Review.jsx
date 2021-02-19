@@ -15,8 +15,8 @@ class Review extends Component {
 
 		return (
 			<div style={this.styles.container}>
-				{reviewEnded ? (
-					this.endReview()
+				{1 === 1 ? (
+					<EndReviewMessage />
 				) : (
 					<React.Fragment>
 						<ReviewSection
@@ -46,11 +46,6 @@ class Review extends Component {
 			);
 		}
 	}
-
-	endReview = () => {
-		this.saveReview();
-		return <EndReviewMessage />;
-	};
 
 	reviewCard = (ease) => {
 		const cards = [...this.state.cards];
