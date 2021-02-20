@@ -1,12 +1,17 @@
 import { useState } from "react";
 
-export default function useForm(form, callback) {
+const defaultValues = { text: {}, select: {}, checkbox: {} };
+
+export default function useForm(form = defaultValues, callback) {
 	const [values, setValues] = useState(form);
 	const [errors, setErrors] = useState({});
 
 	const handleChange = (e) => {
-		if (e.target.type === "select-one") handleSelect(e);
-		else handleText(e);
+		const type = e.target.type;
+		if (type === "select-one") handleSelect(e);
+		else if (type === "text" || type === "number") handleText(e);
+		else if (type === "checkbox") handleCheckbox(e);
+		else console.log(`${type} not found`);
 	};
 
 	const handleSelect = (e) => {
@@ -22,6 +27,14 @@ export default function useForm(form, callback) {
 
 		const newValues = { ...values };
 		newValues.text[name] = value;
+		setValues(newValues);
+	};
+
+	const handleCheckbox = (e) => {
+		const { name, checked } = e.target;
+
+		const newValues = { ...values };
+		newValues.checkbox[name] = checked;
 		setValues(newValues);
 	};
 
