@@ -15,7 +15,7 @@ class Review extends Component {
 
 		return (
 			<div style={this.styles.container}>
-				{1 === 1 ? (
+				{reviewEnded ? (
 					<EndReviewMessage />
 				) : (
 					<React.Fragment>
