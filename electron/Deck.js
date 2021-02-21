@@ -62,7 +62,7 @@ class Deck {
 
 	addNewCard(cardObject) {
 		const card = new Card(cardObject);
-		this.Cards().unshift(card);
+		this.cards[card.id] = card;
 		this.newCardsCount++;
 	}
 
