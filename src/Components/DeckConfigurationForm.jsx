@@ -24,11 +24,11 @@ const form = {
 };
 
 export default function DeckConfigurationForm(props) {
-	const { ipcSendSync } = useIpc();
+	const { ipcSend } = useIpc();
 
 	const submit = () => {
 		const deckConfig = { ...values };
-		ipcSendSync(channels.ADD_DECK_CONFIG, deckConfig);
+		ipcSend(channels.ADD_DECK_CONFIG, deckConfig);
 	};
 
 	const { values, errors, handleChange, handleSubmit } = useForm(form, submit);
