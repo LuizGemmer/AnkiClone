@@ -5,21 +5,37 @@ import SelectInput from "../Components/SelectInput";
 import AddButton from "../Components/AddButton";
 
 import useForm from "../useForm.js";
+import useIpc from "../useIpc.js";
 import { channels } from "../Channels";
-const { ipcRenderer } = window.require("electron");
-
-let state = getState();
 
 export default function AddNewDeck() {
+	const { ipcConstructor, ipcSend } = useIpc(false);
+
+	const state = () => {
+		const configs = ipcConstructor(channels.GET_CONFIGS);
+		return {
+			select: {
+				deckConfig: {
+					options: configs,
+					value: configs[0],
+				},
+			},
+			text: {
+				deckName: "",
+			},
+		};
+	};
+
 	const addNewDeck = () => {
 		const deckObject = {
 			name: values.text.deckName,
 			deckConfig: values.select.deckConfig.value,
 		};
-		ipcRenderer.send(channels.ADD_NEW_DECK, deckObject);
+		ipcSend(channels.ADD_NEW_DECK, deckObject);
 	};
+
 	const { values, errors, handleChange, handleSubmit } = useForm(
-		state,
+		state(),
 		addNewDeck
 	);
 
@@ -42,18 +58,4 @@ export default function AddNewDeck() {
 			<AddButton label="Add Deck" onClick={handleSubmit} />
 		</React.Fragment>
 	);
-}
-
-function getState() {
-	return {
-		select: {
-			deckConfig: {
-				options: ["Dummy 1", "Dummy 2"],
-				value: "Dummy 1",
-			},
-		},
-		text: {
-			deckName: "",
-		},
-	};
 }

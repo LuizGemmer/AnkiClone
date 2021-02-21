@@ -95,3 +95,13 @@ ipcMain.on(channels.SAVE_REVIEW, (e, card) => {
 ipcMain.on(channels.ADD_DECK_CONFIG, (e, deckConfig) => {
 	console.dir(deckConfig);
 });
+
+ipcMain.on(channels.GET_CONFIGS, (e) => {
+	const configs = [];
+
+	for (let config in collection.deckConfigs) {
+		configs.push(config);
+	}
+
+	e.returnValue = configs;
+});
