@@ -5,31 +5,38 @@ const fs = require("fs");
 const Deck = require("./Deck").Deck;
 const Card = require("./Card").Card;
 
-// For now, just a test deck to garantee everything is working
-const defaultDeck = require("./DefaultDeck").DefaultDeck;
+// For now, just a test collection to garantee everything is working
+const { defaultCollection } = require("./DefaultCollection");
 
 class Collection {
-	USER_DATA_PATH = app.getPath("userData");
-	USER_DECKS_PATH = path.join(this.USER_DATA_PATH, "/decks");
-	shouldInitializeDirs = fs.readdirSync(this.USER_DECKS_PATH).length === 0;
+	PATHS = {
+		USER_DATA: app.getPath("userData"),
+		USER_DECKS: path.join(app.getPath("userData"), "/decks"),
+		DECK_CONFIGS: path.join(app.getPath("userData"), "deckConfigs"),
+	};
+	shouldInitializeDirs = !fs.existsSync(this.PATHS.USER_DECKS);
 
 	constructor() {
 		if (this.shouldInitializeDirs) {
 			this.initializeDirs();
 		}
 		this.decks = this.initializeDecks();
+		this.deckConfigs = this.getConfigs();
 	}
 
 	initializeDirs() {
-		if (!fs.existsSync(this.USER_DATA_PATH)) {
-			fs.mkdirSync(this.USER_DATA_PATH);
-		}
-		if (!fs.existsSync(this.USER_DECKS_PATH)) {
-			fs.mkdirSync(this.USER_DECKS_PATH);
+		for (let path in this.PATHS) {
+			if (!fs.existsSync(this.PATHS[path])) {
+				fs.mkdirSync(this.PATHS[path]);
+			}
 		}
 		fs.writeFileSync(
-			path.join(this.USER_DECKS_PATH, "/Default Deck.json"),
-			JSON.stringify(defaultDeck)
+			path.join(this.PATHS.USER_DECKS, "/Default Deck.json"),
+			JSON.stringify(defaultCollection.deck)
+		);
+		fs.writeFileSync(
+			path.join(this.PATHS.DECK_CONFIGS, "Default.json"),
+			JSON.stringify(defaultCollection.deckConfig)
 		);
 	}
 
@@ -46,8 +53,8 @@ class Collection {
 
 	getDecks() {
 		let collection = [];
-		for (let file of fs.readdirSync(this.USER_DECKS_PATH)) {
-			let filePath = path.join(this.USER_DECKS_PATH, file);
+		for (let file of fs.readdirSync(this.PATHS.USER_DECKS)) {
+			let filePath = path.join(this.PATHS.USER_DECKS, file);
 			let deck = fs.readFileSync(filePath);
 			collection.push(JSON.parse(deck));
 		}
@@ -62,7 +69,16 @@ class Collection {
 		return cards;
 	}
 
-	getDeckByName(name) {
+	getConfigs() {
+		let configs = {};
+		for (fileName of fs.readdirSync(this.PATHS.DECK_CONFIGS)) {
+			const file = fs.readFileSync(fileName);
+			configs[fileName] = file;
+		}
+		return configs;
+	}
+
+	getDeckByNameb(name) {
 		for (let deck of this.decks) {
 			if (deck.name === name) return deck;
 		}
