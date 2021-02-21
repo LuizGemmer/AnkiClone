@@ -26,8 +26,7 @@ class Card {
 
 	isDue() {
 		const today = new Date();
-		const hasEase = this.ease !== undefined;
-		return this.nextReview.getTime() - today.getTime() <= 0 || hasEase;
+		return this.nextReview.getTime() - today.getTime() <= 0;
 	}
 
 	// not tested
