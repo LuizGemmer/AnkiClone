@@ -6,5 +6,6 @@ module.exports = {
 		ADD_NEW_DECK: "addNewDeck",
 		GET_DUE_CARDS: "getDueCards",
 		SAVE_REVIEW: "saveReview",
+		ADD_DECK_CONFIG: "addDeckConfig",
 	},
 };

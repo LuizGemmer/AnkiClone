@@ -7,11 +7,11 @@ class TextInput extends Component {
 		return (
 			<div style={this.styles.textBlock}>
 				<span style={this.props.error ? this.styles.errorText : {}}>
-					{this.props.label}
+					{this.props.label}:
 				</span>
 				<input
 					name={this.props.name}
-					type="text"
+					type={this.props.type ? this.props.type : "text"}
 					style={
 						this.props.error
 							? Object.assign({}, this.styles.textField, this.styles.errorField)

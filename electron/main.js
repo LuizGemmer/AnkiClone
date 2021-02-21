@@ -91,3 +91,7 @@ ipcMain.on(channels.SAVE_REVIEW, (e, card) => {
 	const deck = collection.getDeckByName(card.deck);
 	deck.saveReview(card);
 });
+
+ipcMain.on(channels.ADD_DECK_CONFIG, (e, deckConfig) => {
+	console.dir(deckConfig);
+});

@@ -5,6 +5,7 @@ import { withTheme } from "@material-ui/core";
 import Navbar from "../Components/Navbar";
 import AddNewCard from "./AddNewCard";
 import AddNewDeck from "./AddNewDeck";
+import DeckConfigurationForm from "../Components/DeckConfigurationForm";
 
 class Add extends Component {
 	render() {
@@ -31,6 +32,7 @@ class Add extends Component {
 			tabs: [
 				{ name: "New Card", component: <AddNewCard /> },
 				{ name: "New Deck", component: <AddNewDeck /> },
+				{ name: "Deck Config", component: <DeckConfigurationForm /> },
 			],
 		};
 	}
