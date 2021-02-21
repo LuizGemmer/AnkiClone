@@ -1,8 +1,6 @@
 import { useState } from "react";
 
-const defaultValues = { text: {}, select: {}, checkbox: {} };
-
-export default function useForm(form = defaultValues, callback) {
+export default function useForm(form, callback) {
 	const [values, setValues] = useState(form);
 	const [errors, setErrors] = useState({});
 
@@ -43,7 +41,8 @@ export default function useForm(form = defaultValues, callback) {
 		setErrors(tmpErrors);
 
 		const hasErrors = Object.keys(tmpErrors).length !== 0;
-		if (!hasErrors) {
+		if (hasErrors) setErrors(tmpErrors);
+		else {
 			callback();
 			reset();
 		}
@@ -61,12 +60,12 @@ export default function useForm(form = defaultValues, callback) {
 	};
 
 	const reset = () => {
-		const newValues = { ...values };
+		const text = {};
 
-		for (let field in newValues.text) {
-			newValues.text[field] = "";
+		for (let field in values.text) {
+			text[field] = "";
 		}
-		setValues(newValues);
+		setValues({ ...values, text });
 	};
 
 	return { values, errors, handleChange, handleSubmit };
