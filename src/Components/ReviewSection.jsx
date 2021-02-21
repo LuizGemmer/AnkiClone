@@ -7,13 +7,13 @@ export default class ReviewSection extends Component {
 		return (
 			<React.Fragment>
 				<div style={this.styles.front}>
-					<p>{this.props.card.fields.front}</p>
+					<p>{this.props.card.fields.Front}</p>
 				</div>
 				{this.props.showAnswer ? (
 					<React.Fragment>
 						<Divider />
 						<div style={this.styles.back}>
-							<p>{this.props.card.fields.back}</p>
+							<p>{this.props.card.fields.Back}</p>
 						</div>
 					</React.Fragment>
 				) : null}

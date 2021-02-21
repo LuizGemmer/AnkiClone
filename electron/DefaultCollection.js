@@ -9,8 +9,8 @@ for (let i = 0; i < 100; i++) {
 		deck: "Default Deck",
 		type: "Basic", // not implemented yet
 		fields: {
-			front: `garbage data front ${i}`,
-			back: `garbage data back ${i}`,
+			Front: `garbage data front ${i}`,
+			Back: `garbage data back ${i}`,
 		},
 	};
 	deck.cards.unshift(card);
@@ -29,8 +29,8 @@ let deckConfig = {
 cardType = {
 	name: "Basic",
 	fields: [
-		{ name: "front", placement: "front" },
-		{ name: "back", placement: "back" },
+		{ name: "Front", isInFront: true },
+		{ name: "Back", isInFront: false },
 	],
 };
 
