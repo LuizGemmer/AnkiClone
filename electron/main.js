@@ -93,7 +93,7 @@ ipcMain.on(channels.SAVE_REVIEW, (e, card) => {
 });
 
 ipcMain.on(channels.ADD_DECK_CONFIG, (e, deckConfig) => {
-	console.dir(deckConfig);
+	collection.deckConfigs[deckConfig.name] = deckConfig;
 });
 
 ipcMain.on(channels.GET_CONFIGS, (e) => {

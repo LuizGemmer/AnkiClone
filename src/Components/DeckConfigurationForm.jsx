@@ -27,7 +27,20 @@ export default function DeckConfigurationForm(props) {
 	const { ipcSend } = useIpc();
 
 	const submit = () => {
-		const deckConfig = { ...values };
+		const {
+			configName,
+			dueCardsMaxPerReview,
+			newCardsMaxPerReview,
+			retirementAgeInDays,
+		} = values.text;
+		const deckConfig = {
+			...values.checkbox,
+			name: configName,
+			dueCardsMaxPerReview,
+			newCardsMaxPerReview,
+			retirementAgeInDays,
+		};
+
 		ipcSend(channels.ADD_DECK_CONFIG, deckConfig);
 	};
 
