@@ -71,9 +71,10 @@ class Collection {
 
 	getConfigs() {
 		let configs = {};
-		for (fileName of fs.readdirSync(this.PATHS.DECK_CONFIGS)) {
-			const file = fs.readFileSync(fileName);
-			configs[fileName] = file;
+		for (let fileName of fs.readdirSync(this.PATHS.DECK_CONFIGS)) {
+			let file = fs.readFileSync(path.join(this.PATHS.DECK_CONFIGS, fileName));
+			file = JSON.parse(file);
+			configs[file.name] = file;
 		}
 		return configs;
 	}
