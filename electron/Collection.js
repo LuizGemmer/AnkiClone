@@ -78,7 +78,7 @@ class Collection {
 		return configs;
 	}
 
-	getDeckByNameb(name) {
+	getDeckByName(name) {
 		for (let deck of this.decks) {
 			if (deck.name === name) return deck;
 		}
