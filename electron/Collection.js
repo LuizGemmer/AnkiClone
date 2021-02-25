@@ -20,8 +20,8 @@ class Collection {
 		if (this.shouldInitializeDirs) {
 			this.initializeDirs();
 		}
-		this.decks = this.initializeDecks();
 		this.deckConfigs = this.getConfigs();
+		this.decks = this.initializeDecks();
 	}
 
 	initializeDirs() {
@@ -45,7 +45,9 @@ class Collection {
 		const decks = this.getDecks();
 		for (let deck of decks) {
 			let cards = this.initializeCards(deck.cards);
-			collection.push(new Deck(cards, deck));
+			collection.push(
+				new Deck(cards, deck, this.deckConfigs[deck.configuration])
+			);
 		}
 
 		return collection;

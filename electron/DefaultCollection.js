@@ -1,7 +1,12 @@
 // For now, just a generator of garbege data
 // for development porpuses
 
-let deck = { name: "Default Deck", cards: [] };
+let deck = {
+	name: "Default Deck",
+	cards: [],
+	configuration: "Default",
+	lastReview: { date: 0 },
+};
 
 for (let i = 0; i < 100; i++) {
 	const card = {
@@ -18,8 +23,8 @@ for (let i = 0; i < 100; i++) {
 
 let deckConfig = {
 	name: "Default",
-	dueCardsMaxPerReview: 1000,
-	newCardsMaxPerReview: 1000,
+	maxDueCardsDay: 1000,
+	maxNewCardsDay: 1000,
 	retirementAgeInDays: 120,
 	useRetirement: true,
 	showReaminingCardsInReview: true,

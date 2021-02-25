@@ -29,7 +29,7 @@ export default function AddNewDeck() {
 	const addNewDeck = () => {
 		const deckObject = {
 			name: values.text.deckName,
-			deckConfig: values.select.deckConfig.value,
+			configuration: values.select.deckConfig.value,
 		};
 		ipcSend(channels.ADD_NEW_DECK, deckObject);
 	};

@@ -56,11 +56,7 @@ ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
 	let returnValue = [];
 
 	for (let deck of collection.decks) {
-		returnValue.push({
-			name: deck.name,
-			due: deck.dueCardsCount,
-			new: deck.newCardsCount,
-		});
+		returnValue.push(deck.getHomeTabComponents());
 	}
 	e.returnValue = returnValue;
 });
