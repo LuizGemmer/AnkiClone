@@ -37,11 +37,10 @@ class Deck {
 
 	initReviewsLeft(deck) {
 		const { maxNewCardsDay, maxDueCardsDay } = this.configuration;
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
 		const lastReviewDate = new Date(deck.lastReview.date);
 
-		console.log(lastReviewDate.getTime() === today.getTime());
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
 
 		if (lastReviewDate.getTime() === today.getTime()) {
 			return deck.lastReview;
