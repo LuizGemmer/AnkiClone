@@ -36,8 +36,8 @@ export default function DeckConfigurationForm(props) {
 		const deckConfig = {
 			...values.checkbox,
 			name: configName,
-			dueCardsMaxPerReview,
-			newCardsMaxPerReview,
+			maxDueCardsDay: dueCardsMaxPerReview,
+			maxNewCardsDay: newCardsMaxPerReview,
 			retirementAgeInDays,
 		};
 
