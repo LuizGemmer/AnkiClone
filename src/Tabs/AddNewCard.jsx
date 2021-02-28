@@ -19,6 +19,7 @@ export default function AddNewCard(props) {
 			deck: select.value,
 			type: "Basic Card",
 			fields: values.text,
+			state: "new",
 		};
 		ipcSend(channels.ADD_NEW_CARD, cardObject);
 	};

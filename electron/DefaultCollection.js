@@ -12,6 +12,7 @@ for (let i = 0; i < 100; i++) {
 	const card = {
 		id: i,
 		deck: "Default Deck",
+		state: "new",
 		type: "Basic", // not implemented yet
 		fields: {
 			Front: `garbage data front ${i}`,

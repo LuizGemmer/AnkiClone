@@ -32,7 +32,7 @@ class Deck {
 		for (let card of this.Cards()) {
 			if (card.isDue()) count++;
 		}
-		return count - this.newCardsCount;
+		return count;
 	}
 
 	initReviewsLeft(deck) {

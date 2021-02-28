@@ -4,27 +4,28 @@ class Card {
 		this.type = cardObject.type;
 		this.deck = cardObject.deck; // I think this won't be nedded, but I'll leave it there for now
 		this.fields = cardObject.fields;
+		this.state = cardObject.state;
+
 		this.lastReview = cardObject.lastReview
 			? new Date(cardObject.lastReview)
 			: undefined;
-
 		// If a card does not have a review scheduled, then it is a new card
 		this.nextReview = cardObject.nextReview
 			? cardObject.nextReview
 			: new Date();
 
 		this.ease = cardObject.ease;
-	}
 
-	shouldBeReviewed() {
-		return this.isNew() || this.isDue();
+		if (this.isDue()) this.state = "due";
 	}
 
 	isNew() {
-		return this.lastReview ? false : true;
+		return this.state === "new" ? true : false;
 	}
 
 	isDue() {
+		if (this.state === "new") return false;
+
 		const today = new Date();
 		return this.nextReview.getTime() - today.getTime() <= 0;
 	}
@@ -49,6 +50,7 @@ class Card {
 			this.nextReview = new Date(this.lastReview.getTime() + newReviewInterval);
 		}
 
+		this.state = "reviewed";
 		this.lastReview = new Date();
 	}
 
@@ -65,6 +67,7 @@ class Card {
 		const saveInfo = {
 			id: this.id,
 			type: this.type,
+			state: this.state,
 			deck: this.deck, // I think this won't be nedded, but I'll leave it there for now
 			fields: this.fields,
 			nextReview: this.nextReview.toLocaleDateString("en-US"),
