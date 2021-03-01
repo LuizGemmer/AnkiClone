@@ -8,20 +8,6 @@ let deck = {
 	lastReview: { date: 0 },
 };
 
-for (let i = 0; i < 100; i++) {
-	const card = {
-		id: i,
-		deck: "Default Deck",
-		state: "new",
-		type: "Basic", // not implemented yet
-		fields: {
-			Front: `garbage data front ${i}`,
-			Back: `garbage data back ${i}`,
-		},
-	};
-	deck.cards.unshift(card);
-}
-
 let deckConfig = {
 	name: "Default",
 	maxDueCardsDay: 1000,
@@ -31,6 +17,24 @@ let deckConfig = {
 	showReaminingCardsInReview: true,
 	showTimerInReview: true,
 };
+let today = new Date();
+
+for (let i = 0; i < 100; i++) {
+	let lastReview = today.getTime() - 86400000 * (200 - i);
+	const card = {
+		id: i,
+		deck: "Default Deck",
+		state: "due",
+		type: "Basic", // not implemented yet
+		fields: {
+			Front: `garbage data front ${i}`,
+			Back: `garbage data back ${i}`,
+		},
+		lastReview,
+		nextReview: new Date(),
+	};
+	deck.cards.unshift(card);
+}
 
 cardType = {
 	name: "Basic",

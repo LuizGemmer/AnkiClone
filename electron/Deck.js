@@ -4,11 +4,16 @@ class Deck {
 	constructor(cardList, deckProperties, configuration) {
 		this.cards = this.initCardsObject(cardList);
 		this.name = deckProperties.name;
-		this.newCardsCount = this.card !== [] ? this.updateNewCardsCount() : 0;
-		this.dueCardsCount = this.card !== [] ? this.updateDueCardsCount() : 0;
 
 		this.configuration = configuration;
 		this.reviewsLeft = this.initReviewsLeft(deckProperties);
+
+		if (this.configuration.useRetirement) {
+			this.runRetirement();
+		}
+
+		this.newCardsCount = this.card !== [] ? this.updateNewCardsCount() : 0;
+		this.dueCardsCount = this.card !== [] ? this.updateDueCardsCount() : 0;
 	}
 
 	initCardsObject(cardList) {
@@ -53,6 +58,20 @@ class Deck {
 		}
 	}
 
+	runRetirement() {
+		const MILISECONDS_IN_DAY = 86400000;
+		const retirementAge =
+			MILISECONDS_IN_DAY * this.configuration.retirementAgeInDays;
+
+		for (let card of this.Cards()) {
+			// if (card.state !== "reviewed") continue
+
+			const reviewInterval =
+				card.nextReview.getTime() - card.lastReview.getTime();
+			if (reviewInterval > retirementAge) card.state = "retired";
+		}
+	}
+
 	Cards() {
 		return Object.values(this.cards);
 	}
@@ -76,13 +95,14 @@ class Deck {
 					newCardsCount++;
 					reviewCards.push(card);
 				}
-			} else if (card.isDue()) {
+			} else if (card.state === "due") {
 				if (dueCardsCount < this.reviewsLeft.due) {
 					dueCardsCount++;
 					reviewCards.push(card);
 				}
 			}
 		}
+
 		return reviewCards;
 	}
 

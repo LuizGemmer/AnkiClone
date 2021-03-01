@@ -11,7 +11,7 @@ class Card {
 			: undefined;
 		// If a card does not have a review scheduled, then it is a new card
 		this.nextReview = cardObject.nextReview
-			? cardObject.nextReview
+			? new Date(cardObject.nextReview)
 			: new Date();
 
 		this.ease = cardObject.ease;
@@ -24,7 +24,8 @@ class Card {
 	}
 
 	isDue() {
-		if (this.state === "new") return false;
+		if (this.state === "due") return true;
+		if (this.state !== "reviewed") return false;
 
 		const today = new Date();
 		return this.nextReview.getTime() - today.getTime() <= 0;
@@ -34,9 +35,9 @@ class Card {
 	doReview() {
 		// Review ease = 0: user did not remember the cards content
 		if (this.ease === 0) return;
+		const today = new Date();
 
 		if (this.isNew()) {
-			const today = new Date();
 			const MILISECONDS_IN_DAY = 86400000;
 
 			// Sets next review interval to 1 or 4 days
@@ -51,7 +52,7 @@ class Card {
 		}
 
 		this.state = "reviewed";
-		this.lastReview = new Date();
+		this.lastReview = today;
 	}
 
 	// not tested
