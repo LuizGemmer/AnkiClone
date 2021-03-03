@@ -115,8 +115,10 @@ class Deck {
 
 			if (card.ease === 0) this.dueCardsCount++;
 		} else {
-			this.dueCardsCount--;
-			this.reviewsLeft.due--;
+			if (card.ease !== 0) {
+				this.dueCardsCount--;
+				this.reviewsLeft.due--;
+			}
 		}
 
 		card.doReview();

@@ -36,7 +36,7 @@ class Review extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = { cards: [], showAnswer: false, reviewedCards: [], index: 0 };
+		this.state = { cards: [], showAnswer: false };
 
 		// Initializes the state
 		if (!this.state.cards[0]) {
@@ -56,7 +56,6 @@ class Review extends Component {
 			cards.push(card);
 		}
 
-		// Remove the card from the begging of the list and update state
 		cards.splice(0, 1);
 		this.setState({ cards, showAnswer: false });
 		this.saveReview(card);
