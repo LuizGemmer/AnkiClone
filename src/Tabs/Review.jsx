@@ -28,6 +28,7 @@ class Review extends Component {
 							onReview={this.reviewCard}
 							showAnswer={this.state.showAnswer}
 							remainingCards={this.state.cards.length}
+							config={this.state.config}
 						/>
 					</React.Fragment>
 				)}
@@ -43,6 +44,11 @@ class Review extends Component {
 		if (!this.state.cards[0]) {
 			this.state.cards = ipcRenderer.sendSync(
 				channels.GET_DUE_CARDS,
+				this.props.deck
+			);
+
+			this.state.config = ipcRenderer.sendSync(
+				channels.GET_DECK_CONFIG,
 				this.props.deck
 			);
 		}

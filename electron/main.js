@@ -101,3 +101,8 @@ ipcMain.on(channels.GET_CONFIGS, (e) => {
 
 	e.returnValue = configs;
 });
+
+ipcMain.on(channels.GET_DECK_CONFIG, (e, name) => {
+	const deck = collection.getDeckByName(name);
+	e.returnValue = deck.configuration;
+});

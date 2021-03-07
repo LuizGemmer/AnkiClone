@@ -22,8 +22,11 @@ class AnsewerBar extends Component {
 					<Button onClick={this.props.onShowAnswers}>Show Answers</Button>
 				)}
 				<div style={this.styles.sectionInfo}>
-					<Timer />
-					<span style={this.styles.Good}>{this.props.remainingCards}</span>
+					{this.props.config.showTimerInReview ? <Timer /> : null}
+
+					{this.props.config.showReaminingCardsInReview ? (
+						<span style={this.styles.Good}>{this.props.remainingCards}</span>
+					) : null}
 				</div>
 			</div>
 		);
@@ -33,7 +36,7 @@ class AnsewerBar extends Component {
 		answerbar: {
 			height: "60px",
 			width: "100vw",
-			padding: "5px",
+			padding: "5px 30%",
 			boxSizing: "border-box",
 
 			position: "fixed",

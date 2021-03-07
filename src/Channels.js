@@ -8,5 +8,6 @@ module.exports = {
 		SAVE_REVIEW: "saveReview",
 		ADD_DECK_CONFIG: "addDeckConfig",
 		GET_CONFIGS: "getConfigs",
+		GET_DECK_CONFIG: "getDeckConfig",
 	},
 };
