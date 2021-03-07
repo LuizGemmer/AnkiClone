@@ -22,6 +22,7 @@ class Collection {
 		}
 		this.deckConfigs = this.getConfigs();
 		this.decks = this.initializeDecks();
+		this.cardId = getCardId();
 	}
 
 	initializeDirs() {
@@ -79,6 +80,16 @@ class Collection {
 			configs[file.name] = file;
 		}
 		return configs;
+	}
+
+	getCardId() {
+		let id = 0;
+		for (let deck of this.decks) {
+			for (let card of deck.Cards()) {
+				id = Math.max(id, card.id);
+			}
+		}
+		return id;
 	}
 
 	getDeckByName(name) {
