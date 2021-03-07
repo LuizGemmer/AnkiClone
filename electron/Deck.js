@@ -42,6 +42,11 @@ class Deck {
 
 	initReviewsLeft(deck) {
 		const { maxNewCardsDay, maxDueCardsDay } = this.configuration;
+		const defaultLastReview = {
+			date: today,
+			due: maxDueCardsDay,
+			new: maxNewCardsDay,
+		};
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
@@ -50,21 +55,13 @@ class Deck {
 		if (deck.lastReview) {
 			lastReviewDate = new Date(deck.lastReview.date);
 		} else {
-			return {
-				date: today,
-				due: maxDueCardsDay,
-				new: maxNewCardsDay,
-			};
+			return defaultLastReview;
 		}
 
 		if (lastReviewDate.getTime() === today.getTime()) {
 			return deck.lastReview;
 		} else {
-			return {
-				date: today,
-				due: maxDueCardsDay,
-				new: maxNewCardsDay,
-			};
+			return defaultLastReview;
 		}
 	}
 
@@ -74,7 +71,7 @@ class Deck {
 			MILISECONDS_IN_DAY * this.configuration.retirementAgeInDays;
 
 		for (let card of this.Cards()) {
-			// if (card.state !== "reviewed") continue
+			if (card.state !== "reviewed") continue;
 
 			const reviewInterval =
 				card.nextReview.getTime() - card.lastReview.getTime();
