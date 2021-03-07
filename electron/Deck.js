@@ -42,10 +42,20 @@ class Deck {
 
 	initReviewsLeft(deck) {
 		const { maxNewCardsDay, maxDueCardsDay } = this.configuration;
-		const lastReviewDate = new Date(deck.lastReview.date);
 
 		const today = new Date();
 		today.setHours(0, 0, 0, 0);
+
+		let lastReviewDate;
+		if (deck.lastReview) {
+			lastReviewDate = new Date(deck.lastReview.date);
+		} else {
+			return {
+				date: today,
+				due: maxDueCardsDay,
+				new: maxNewCardsDay,
+			};
+		}
 
 		if (lastReviewDate.getTime() === today.getTime()) {
 			return deck.lastReview;

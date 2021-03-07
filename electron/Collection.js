@@ -88,7 +88,11 @@ class Collection {
 	}
 
 	addNewDeck(deckObject) {
-		const deck = new Deck([], deckObject);
+		const deck = new Deck(
+			[],
+			deckObject,
+			this.deckConfigs[deckObject.configuration]
+		);
 		this.decks.push(deck);
 	}
 
