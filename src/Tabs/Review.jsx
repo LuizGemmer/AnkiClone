@@ -27,6 +27,7 @@ class Review extends Component {
 							onShowAnswers={() => this.setState({ showAnswer: true })}
 							onReview={this.reviewCard}
 							showAnswer={this.state.showAnswer}
+							remainingCards={this.state.cards.length}
 						/>
 					</React.Fragment>
 				)}
