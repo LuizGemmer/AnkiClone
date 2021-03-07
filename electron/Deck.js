@@ -42,14 +42,15 @@ class Deck {
 
 	initReviewsLeft(deck) {
 		const { maxNewCardsDay, maxDueCardsDay } = this.configuration;
+
+		const today = new Date();
+		today.setHours(0, 0, 0, 0);
+
 		const defaultLastReview = {
 			date: today,
 			due: maxDueCardsDay,
 			new: maxNewCardsDay,
 		};
-
-		const today = new Date();
-		today.setHours(0, 0, 0, 0);
 
 		let lastReviewDate;
 		if (deck.lastReview) {
@@ -71,7 +72,7 @@ class Deck {
 			MILISECONDS_IN_DAY * this.configuration.retirementAgeInDays;
 
 		for (let card of this.Cards()) {
-			if (card.state !== "reviewed") continue;
+			if (!["due", "reviewed"].includes(card.state)) continue;
 
 			const reviewInterval =
 				card.nextReview.getTime() - card.lastReview.getTime();
@@ -139,19 +140,18 @@ class Deck {
 	}
 
 	getSaveInfo() {
-		const { date, due, newCards } = this.lastReview;
 		let content = {
-			name: "Default Deck",
+			name: this.name,
 			cards: [],
-			configuration: "Default",
-			lastReview: { date, due, new: newCards },
+			configuration: this.configuration.name,
+			lastReview: this.reviewsLeft,
 		};
 
 		for (let card of this.cards) {
 			content.cards.push(card.getSaveInfo());
 		}
 
-		const saveInfo = { path: `/${this.name}`, item: "deck", content };
+		const saveInfo = { path: `/${this.name}`, content };
 		return JSON.stringify(saveInfo);
 	}
 }

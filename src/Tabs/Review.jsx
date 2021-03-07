@@ -69,7 +69,7 @@ class Review extends Component {
 	};
 
 	saveReview = (card) => {
-		ipcRenderer.send(channels.SAVE_REVIEW, card);
+		ipcRenderer.send(channels.SAVE_REVIEW, { card, deck: this.props.deck });
 	};
 
 	styles = {

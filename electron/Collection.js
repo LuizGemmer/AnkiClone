@@ -96,10 +96,33 @@ class Collection {
 		this.decks.push(deck);
 	}
 
-	saveToDisk() {
+	save() {
 		for (let deck of this.decks) {
-			let saveInfo = deck.getSaveInfo();
-			fs.writeFileSync(saveInfo.path, saveInfo.content);
+			this.saveDeck(deck.name);
+		}
+		this.saveDeckConfigs();
+	}
+
+	saveDeck(name) {
+		// This will allow the program to save decks individualy
+		// instead of saving the entire collection
+		// Decks will be altered much more often than everything else,
+		// so I think is a nice performance upgrade (not that it will actually matter)
+
+		const deck = this.getDeckByName(name);
+		let saveInfo = deck.getSaveInfo();
+		fs.writeFileSync(
+			path.join(this.PATHS.USER_DECKS, saveInfo.path),
+			saveInfo.content
+		);
+	}
+
+	saveDeckConfigs() {
+		for (let config of this.deckConfigs) {
+			fs.writeFileSync(
+				path.join(this.PATHS.DECK_CONFIGS, config.name),
+				JSON.stringify(config)
+			);
 		}
 	}
 }

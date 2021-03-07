@@ -2,7 +2,6 @@ class Card {
 	constructor(cardObject) {
 		this.id = cardObject.id;
 		this.type = cardObject.type;
-		this.deck = cardObject.deck; // I think this won't be nedded, but I'll leave it there for now
 		this.fields = cardObject.fields;
 		this.state = cardObject.state;
 
@@ -69,13 +68,15 @@ class Card {
 			id: this.id,
 			type: this.type,
 			state: this.state,
-			deck: this.deck, // I think this won't be nedded, but I'll leave it there for now
 			fields: this.fields,
-			nextReview: this.nextReview.toLocaleDateString("en-US"),
-			lastReview: this.lastReview
-				? this.lastReview.toLocaleDateString("en-US")
-				: undefined,
+			nextReview: this.nextReview,
+			lastReview: this.lastReview ? this.lastReview : undefined,
 		};
+
+		// Hours and minutes do not matter, so I choose to set it to 00:00:00 by default
+		saveInfo.lastReview.setTime(0, 0, 0, 0);
+		saveInfo.nextReview.setTime(0, 0, 0, 0);
+
 		return JSON.stringify(saveInfo);
 	}
 }

@@ -52,6 +52,7 @@ app.on("activate", () => {
 	}
 });
 
+//			 Init window events
 ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
 	let returnValue = [];
 
@@ -66,6 +67,17 @@ ipcMain.on(channels.GET_DECKS, (e) => {
 	e.returnValue = decks;
 });
 
+ipcMain.on(channels.GET_CONFIGS, (e) => {
+	const configs = [];
+
+	for (let config in collection.deckConfigs) {
+		configs.push(config);
+	}
+
+	e.returnValue = configs;
+});
+
+// 			ADD SOMETHING EVENTS
 ipcMain.on(channels.ADD_NEW_CARD, (e, cardObject) => {
 	cardObject.id = cardId;
 	cardId++;
@@ -78,31 +90,29 @@ ipcMain.on(channels.ADD_NEW_DECK, (e, deckObject) => {
 	collection.addNewDeck(deckObject);
 });
 
+ipcMain.on(channels.ADD_DECK_CONFIG, (e, deckConfig) => {
+	collection.deckConfigs[deckConfig.name] = deckConfig;
+});
+
+// 			REVIEW TAB EVENTS
 ipcMain.on(channels.GET_DUE_CARDS, (e, deckName) => {
 	const deck = collection.getDeckByName(deckName);
 	e.returnValue = deck.getReviewCards();
 });
 
-ipcMain.on(channels.SAVE_REVIEW, (e, card) => {
-	const deck = collection.getDeckByName(card.deck);
-	deck.saveReview(card);
-});
-
-ipcMain.on(channels.ADD_DECK_CONFIG, (e, deckConfig) => {
-	collection.deckConfigs[deckConfig.name] = deckConfig;
-});
-
-ipcMain.on(channels.GET_CONFIGS, (e) => {
-	const configs = [];
-
-	for (let config in collection.deckConfigs) {
-		configs.push(config);
-	}
-
-	e.returnValue = configs;
+ipcMain.on(channels.SAVE_REVIEW, (e, args) => {
+	const deck = collection.getDeckByName(args.deck);
+	deck.saveReview(args.card);
 });
 
 ipcMain.on(channels.GET_DECK_CONFIG, (e, name) => {
 	const deck = collection.getDeckByName(name);
 	e.returnValue = deck.configuration;
 });
+
+// 			SAVE SOMETHING TO DISK EVENTS
+ipcMain.on(channels.SAVE_DECK, (e, name) => {
+	collection.saveDeck(name);
+});
+
+ipcMain.on(channels.SAVE_COLLECTION, (e) => collection.save());
