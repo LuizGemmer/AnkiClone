@@ -147,12 +147,12 @@ class Deck {
 			lastReview: this.reviewsLeft,
 		};
 
-		for (let card of this.cards) {
+		for (let card of this.Cards()) {
 			content.cards.push(card.getSaveInfo());
 		}
 
 		const saveInfo = { path: `/${this.name}`, content };
-		return JSON.stringify(saveInfo);
+		return saveInfo;
 	}
 }
 

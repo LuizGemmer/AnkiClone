@@ -12,7 +12,6 @@ const { Collection } = require("./Collection");
 let collection = new Collection();
 
 const isDev = true;
-let cardId = 100; // Temporary
 
 let win;
 
@@ -79,11 +78,12 @@ ipcMain.on(channels.GET_CONFIGS, (e) => {
 
 // 			ADD SOMETHING EVENTS
 ipcMain.on(channels.ADD_NEW_CARD, (e, cardObject) => {
-	cardObject.id = cardId;
-	cardId++;
+	collection.cardId++;
+	cardObject.id = collection.cardId;
 
 	const deck = collection.getDeckByName(cardObject.deck);
 	deck.addNewCard(cardObject);
+	collection.saveDeck(deck.name);
 });
 
 ipcMain.on(channels.ADD_NEW_DECK, (e, deckObject) => {
@@ -92,6 +92,7 @@ ipcMain.on(channels.ADD_NEW_DECK, (e, deckObject) => {
 
 ipcMain.on(channels.ADD_DECK_CONFIG, (e, deckConfig) => {
 	collection.deckConfigs[deckConfig.name] = deckConfig;
+	collection.save();
 });
 
 // 			REVIEW TAB EVENTS
@@ -114,5 +115,3 @@ ipcMain.on(channels.GET_DECK_CONFIG, (e, name) => {
 ipcMain.on(channels.SAVE_DECK, (e, name) => {
 	collection.saveDeck(name);
 });
-
-ipcMain.on(channels.SAVE_COLLECTION, (e) => collection.save());

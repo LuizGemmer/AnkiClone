@@ -54,6 +54,10 @@ class Review extends Component {
 		}
 	}
 
+	componentWillUnmount() {
+		ipcRenderer.send(channels.SAVE_DECK, this.props.deck);
+	}
+
 	reviewCard = (ease) => {
 		const cards = [...this.state.cards];
 		const card = cards[0];

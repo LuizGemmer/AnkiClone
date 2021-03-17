@@ -47,7 +47,9 @@ class Card {
 		} else {
 			// Sets next review interval based on an arbitrary formula
 			const newReviewInterval = this.getNewReviewInterval();
-			this.nextReview = new Date(this.lastReview.getTime() + newReviewInterval);
+			this.nextReview = new Date(
+				this.lastReview.getTime() + newReviewInterval * 2
+			);
 		}
 
 		this.state = "reviewed";
@@ -74,10 +76,12 @@ class Card {
 		};
 
 		// Hours and minutes do not matter, so I choose to set it to 00:00:00 by default
-		saveInfo.lastReview.setTime(0, 0, 0, 0);
-		saveInfo.nextReview.setTime(0, 0, 0, 0);
+		if (saveInfo.lastReview) {
+			saveInfo.lastReview.setHours(0, 0, 0, 0);
+			saveInfo.nextReview.setHours(0, 0, 0, 0);
+		}
 
-		return JSON.stringify(saveInfo);
+		return saveInfo;
 	}
 }
 

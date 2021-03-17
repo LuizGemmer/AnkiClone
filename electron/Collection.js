@@ -22,7 +22,7 @@ class Collection {
 		}
 		this.deckConfigs = this.getConfigs();
 		this.decks = this.initializeDecks();
-		this.cardId = getCardId();
+		this.cardId = this.getCardId();
 	}
 
 	initializeDirs() {
@@ -83,6 +83,7 @@ class Collection {
 	}
 
 	getCardId() {
+		// temporary, I guess...
 		let id = 0;
 		for (let deck of this.decks) {
 			for (let card of deck.Cards()) {
@@ -105,6 +106,7 @@ class Collection {
 			this.deckConfigs[deckObject.configuration]
 		);
 		this.decks.push(deck);
+		this.saveDeck(deck.name);
 	}
 
 	save() {
@@ -122,16 +124,18 @@ class Collection {
 
 		const deck = this.getDeckByName(name);
 		let saveInfo = deck.getSaveInfo();
+
 		fs.writeFileSync(
-			path.join(this.PATHS.USER_DECKS, saveInfo.path),
-			saveInfo.content
+			path.join(this.PATHS.USER_DECKS, `${saveInfo.path}.json`),
+			JSON.stringify(saveInfo.content)
 		);
 	}
 
 	saveDeckConfigs() {
-		for (let config of this.deckConfigs) {
+		for (let configKey in this.deckConfigs) {
+			let config = this.deckConfigs[configKey];
 			fs.writeFileSync(
-				path.join(this.PATHS.DECK_CONFIGS, config.name),
+				path.join(this.PATHS.DECK_CONFIGS, `${config.name}.json`),
 				JSON.stringify(config)
 			);
 		}

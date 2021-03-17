@@ -2,12 +2,13 @@ module.exports = {
 	channels: {
 		GET_DECKS_NAMES_DUE_NEW: "getDecksNamesDueNew",
 		GET_DECKS: "getDecks",
+		GET_DECK_CONFIG: "getDeckConfig",
+		GET_DUE_CARDS: "getDueCards",
+		GET_CONFIGS: "getConfigs",
 		ADD_NEW_CARD: "addNewCard",
 		ADD_NEW_DECK: "addNewDeck",
-		GET_DUE_CARDS: "getDueCards",
-		SAVE_REVIEW: "saveReview",
 		ADD_DECK_CONFIG: "addDeckConfig",
-		GET_CONFIGS: "getConfigs",
-		GET_DECK_CONFIG: "getDeckConfig",
+		SAVE_REVIEW: "saveReview",
+		SAVE_DECK: "saveDeck",
 	},
 };
