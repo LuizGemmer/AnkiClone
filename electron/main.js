@@ -1,46 +1,23 @@
-const { Card } = require("@material-ui/core");
-const { app, BrowserWindow, ipcMain, webContents } = require("electron");
-
-const path = require("path");
-const url = require("url");
+const { app, BrowserWindow, ipcMain } = require("electron");
 
 const { channels } = require("../src/Channels");
 const { Collection } = require("./Collection");
+const { createMainWindow } = require("./Windows/MainWindow");
 
 // Initializes the collection of the user,
 // his decks, cards and card types (not yet implemented)
 let collection = new Collection();
 
 const isDev = true;
-
 let win;
 
-function createWindow() {
-	win = new BrowserWindow({
-		width: isDev ? 1100 : 600,
-		height: 600,
-		title: "Anki Clone",
-		webPreferences: {
-			nodeIntegration: true,
-		},
-	});
-
-	win.webContents.openDevTools();
-
-	const startUrl =
-		process.env.ELECTRON_START_URL ||
-		url.format({
-			pathname: path.join(__dirname, "../index.html"),
-			protocol: "file:",
-			slashes: true,
-		});
-	win.loadURL(startUrl);
-}
-
-app.whenReady().then(createWindow);
+app.whenReady().then(() => {
+	win = createMainWindow(isDev);
+});
 
 app.on("window-all-closed", () => {
 	if (process.platform !== "darwin") {
+		win = null;
 		app.quit();
 	}
 });
