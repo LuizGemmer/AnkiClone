@@ -22,6 +22,7 @@
 		"start": "set BROWSER=none && react-scripts start",
 		"startelectron": "set ELECTRON_START_URL=http://localhost:3000 && electron ."
 	},
+	"homepage": "./",
 	"eslintConfig": {
 		"extends": [
 			"react-app",

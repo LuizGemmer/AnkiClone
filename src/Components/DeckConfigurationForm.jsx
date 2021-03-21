@@ -7,7 +7,7 @@ import { Divider } from "@material-ui/core";
 
 import useForm from "../useForm";
 import useIpc from "../useIpc";
-import { channels } from "../Channels";
+import { channels } from "../shared/Channels";
 
 const form = {
 	text: {

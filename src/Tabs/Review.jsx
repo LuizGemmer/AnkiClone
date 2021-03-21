@@ -6,7 +6,7 @@ import AnsewerBar from "../Components/AnsewerBar";
 import ReviewSection from "../Components/ReviewSection";
 import EndReviewMessage from "../Components/EndReviewMessage";
 
-import { channels } from "../Channels.js";
+import { channels } from "../shared/Channels.js";
 const { ipcRenderer } = window.require("electron");
 
 class Review extends Component {

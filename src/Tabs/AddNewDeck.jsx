@@ -6,7 +6,7 @@ import AddButton from "../Components/AddButton";
 
 import useForm from "../useForm.js";
 import useIpc from "../useIpc.js";
-import { channels } from "../Channels";
+import { channels } from "../shared/Channels";
 
 export default function AddNewDeck() {
 	const { ipcConstructor, ipcSend } = useIpc(false);
