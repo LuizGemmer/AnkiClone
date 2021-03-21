@@ -4,7 +4,7 @@ import { withTheme } from "@material-ui/core";
 import { Divider } from "@material-ui/core";
 
 import DeckItem from "../Components/DeckItem";
-import { channels } from "../shared/Channels";
+import { channels } from "../shared/Channels.js";
 
 const { ipcRenderer } = window.require("electron");
 

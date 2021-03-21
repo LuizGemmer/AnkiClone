@@ -1,6 +1,6 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
 
-const { channels } = require("../src/Channels");
+const { channels } = require("../src/shared/Channels");
 const { Collection } = require("./Collection");
 const { createMainWindow } = require("./Windows/MainWindow");
 
