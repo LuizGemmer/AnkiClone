@@ -8,7 +8,7 @@ const { createMainWindow } = require("./Windows/MainWindow");
 // his decks, cards and card types (not yet implemented)
 let collection = new Collection();
 
-const isDev = true;
+const isDev = false;
 let win;
 
 app.whenReady().then(() => {
