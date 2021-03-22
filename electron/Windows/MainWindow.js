@@ -21,11 +21,7 @@ function createMainWindow(isDev) {
 
 	const startUrl =
 		process.env.ELECTRON_START_URL ||
-		url.format({
-			pathname: path.join(__dirname, "../index.html"),
-			protocol: "file:",
-			slashes: true,
-		});
+		path.normalize(`${__dirname}/../../index.html`);
 	win.loadURL(startUrl);
 
 	win.on("ready-to-show", () => {
