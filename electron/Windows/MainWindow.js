@@ -10,11 +10,11 @@ function createMainWindow(isDev) {
 		title: "Anki Clone",
 		webPreferences: {
 			nodeIntegration: true,
+			contextIsolation: false,
 		},
 		show: false,
 		autoHideMenuBar: true,
 		background: "rgb(48, 48, 48);",
-		contextIsolation: true,
 	});
 
 	isDev ? win.webContents.openDevTools() : null;
