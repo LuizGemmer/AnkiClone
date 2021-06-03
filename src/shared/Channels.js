@@ -10,5 +10,6 @@ module.exports = {
 		ADD_DECK_CONFIG: "addDeckConfig",
 		SAVE_REVIEW: "saveReview",
 		SAVE_DECK: "saveDeck",
+		GET_COLLECTION: "getCollection",
 	},
 };

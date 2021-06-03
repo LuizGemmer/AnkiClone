@@ -7,6 +7,7 @@ import Add from "./Tabs/Add";
 import Home from "./Tabs/Home";
 import Review from "./Tabs/Review";
 import Navbar from "./Components/Navbar";
+import Collection from "./Tabs/Collection";
 
 export default function Router() {
 	const [tab, setTab] = useState(0);
@@ -20,6 +21,7 @@ export default function Router() {
 			),
 		},
 		{ name: "Add", component: <Add /> },
+		{ name: "Collection", component: <Collection /> },
 	];
 
 	const getTab = () => {

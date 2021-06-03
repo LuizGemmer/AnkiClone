@@ -88,6 +88,11 @@ ipcMain.on(channels.GET_DECK_CONFIG, (e, name) => {
 	e.returnValue = deck.configuration;
 });
 
+//			Collection Tab Events
+ipcMain.on(channels.GET_COLLECTION, (e) => {
+	e.returnValue = collection;
+});
+
 // 			SAVE SOMETHING TO DISK EVENTS
 ipcMain.on(channels.SAVE_DECK, (e, name) => {
 	collection.saveDeck(name);
