@@ -18,8 +18,9 @@ class Collection extends Component {
 					handleChange={this.changeTab}
 				/>
 				<div style={this.styles.container}>
-					<Paper>
+					<Paper style={this.styles.list}>
 						<ItemsList
+							changeTab={(tab) => this.setState({ value: tab })}
 							collection={this.state.collection}
 							value={this.state.value}
 						/>
@@ -58,6 +59,10 @@ class Collection extends Component {
 
 			color: this.props.theme.palette.text.secondary,
 			background: this.props.theme.palette.background.default,
+		},
+		list: {
+			maxHeight: "100%",
+			overflow: "auto",
 		},
 	};
 }
