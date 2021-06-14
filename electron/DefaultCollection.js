@@ -3,7 +3,7 @@
 
 let deck = {
 	name: "Default Deck",
-	cards: [],
+	cards: {},
 	configuration: "Default",
 	lastReview: { date: 0 },
 };
@@ -19,31 +19,25 @@ let deckConfig = {
 };
 let today = new Date();
 
+const cards = [];
+
 for (let i = 0; i < 100; i++) {
 	let lastReview = today.getTime() - 86400000 * (200 - i);
 	const card = {
 		id: i,
 		deck: "Default Deck",
 		state: "due",
-		type: "Basic", // not implemented yet
 		fields: {
 			Front: `garbage data front ${i}`,
 			Back: `garbage data back ${i}`,
 		},
 		lastReview,
-		nextReview: new Date(),
+		nextReview: today,
 	};
-	deck.cards.unshift(card);
+
+	cards.push(card);
 }
 
-cardType = {
-	name: "Basic",
-	fields: [
-		{ name: "Front", isInFront: true },
-		{ name: "Back", isInFront: false },
-	],
-};
-
 module.exports = {
-	defaultCollection: { deck, deckConfig, cardType },
+	defaultCollection: { cards, deck, deckConfig },
 };

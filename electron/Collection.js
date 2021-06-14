@@ -12,9 +12,10 @@ class Collection {
 	PATHS = {
 		USER_DATA: app.getPath("userData"),
 		USER_DECKS: path.join(app.getPath("userData"), "/decks"),
+		USER_CARDS: path.join(app.getPath("userData"), "/cards"),
 		DECK_CONFIGS: path.join(app.getPath("userData"), "deckConfigs"),
 	};
-	shouldInitializeDirs = !fs.existsSync(this.PATHS.USER_DECKS);
+	shouldInitializeDirs = !fs.existsSync(this.PATHS.USER_CARDS);
 
 	constructor() {
 		if (this.shouldInitializeDirs) {
@@ -39,17 +40,19 @@ class Collection {
 			path.join(this.PATHS.DECK_CONFIGS, "Default.json"),
 			JSON.stringify(defaultCollection.deckConfig)
 		);
+		fs.writeFileSync(
+			path.join(this.PATHS.USER_CARDS, "cards.json"),
+			JSON.stringify(defaultCollection.cards)
+		);
 	}
 
 	initializeDecks() {
-		const collection = [];
+		let collection = [];
 		const decks = this.getDecks();
-		for (let deck of decks) {
-			let cards = this.initializeCards(deck.cards);
-			collection.push(
-				new Deck(cards, deck, this.deckConfigs[deck.configuration])
-			);
-		}
+
+		collection = decks.map(
+			(deck) => new Deck(deck, this.deckConfigs[deck.configuration])
+		);
 
 		return collection;
 	}
@@ -64,12 +67,14 @@ class Collection {
 		return collection;
 	}
 
-	initializeCards(cardList) {
-		let cards = [];
-		for (let card of cardList) {
-			cards.push(new Card(card));
+	initializeCards() {
+		let cards = fs.readFileSync(path.join(this.PATHS.USER_CARDS, "cards.json"));
+		cards = JSON.parse(cards);
+
+		for (let card of cards) {
+			card = new Card(card);
+			this.decks[card.deck].cards[card.id] = card;
 		}
-		return cards;
 	}
 
 	getConfigs() {

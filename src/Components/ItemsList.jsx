@@ -8,19 +8,7 @@ class ItemsList extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<List style={this.styles.list}>
-					{this.getListItems().map((item, index) => (
-						<ListItem key={index} button onClick={this.handleClick}>
-							<ListItemText>
-								{this.props.value === 0 || this.props.value === 2
-									? item.name
-									: `${item.id} - ${item.front.substr(0, 30)}... - ${
-											item.deck
-									  }`}
-							</ListItemText>
-						</ListItem>
-					))}
-				</List>
+				<List style={this.styles.list}>'</List>
 				<Menu
 					theme={this.props.theme}
 					anchor={this.state.anchorEl}
@@ -52,27 +40,10 @@ class ItemsList extends Component {
 
 	getListOfCards = (deck = undefined) => {
 		let cards = [];
-		if (deck) {
-			for (let deck of this.props.collection.decks) {
-				if (deck.name === this.state.deck) {
-					for (let card of Object.values(deck.cards)) {
-						cards.push({
-							id: card.id,
-							front: card.fields.Front,
-							deck: deck.name,
-						});
-					}
-				}
-			}
-		} else {
-			for (let deck of this.props.collection.decks) {
-				for (let card of Object.values(deck.cards)) {
-					cards.push({
-						id: card.id,
-						front: card.fields.Front,
-						deck: deck.name,
-					});
-				}
+
+		for (let deck of this.props.collection.decks) {
+			if (deck.name === this.state.deck || deck === undefined) {
+				cards.push.apply(cards, Object.values(deck.cards));
 			}
 		}
 
@@ -87,7 +58,7 @@ class ItemsList extends Component {
 	handleClose = (event) => {
 		let text = event.target.innerText;
 
-		if (text == "See cards") {
+		if (text === "See cards") {
 			this.props.changeTab(1);
 			this.setState({ deck: this.state.target });
 		}
@@ -100,6 +71,21 @@ class ItemsList extends Component {
 			margin: "5px 10px",
 		},
 	};
+}
+
+class CustomItem extends Component {
+	render() {
+		const { index, handleClick, value, item } = this.props;
+		return (
+			<ListItem key={index} button onClick={this.handleClick}>
+				<ListItemText>
+					{this.props.value === 0 || this.props.value === 2
+						? item.name
+						: `${item.id} - ${item.front.substr(0, 30)}... - ${item.deck}`}
+				</ListItemText>
+			</ListItem>
+		);
+	}
 }
 
 export default withTheme(ItemsList);

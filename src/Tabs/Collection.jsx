@@ -5,7 +5,7 @@ import { List, withTheme, Paper } from "@material-ui/core";
 import Navbar from "../Components/Navbar";
 
 import { channels } from "../shared/Channels";
-import ItemsList from "../Components/ItemsList";
+// import ItemsList from "../Components/ItemsList";
 const { ipcRenderer } = window.require("electron");
 
 class Collection extends Component {
@@ -19,11 +19,11 @@ class Collection extends Component {
 				/>
 				<div style={this.styles.container}>
 					<Paper style={this.styles.list}>
-						<ItemsList
+						{/* <ItemsList
 							changeTab={(tab) => this.setState({ value: tab })}
 							collection={this.state.collection}
 							value={this.state.value}
-						/>
+						/> */}
 					</Paper>
 				</div>
 			</React.Fragment>

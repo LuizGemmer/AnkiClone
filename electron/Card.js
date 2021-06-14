@@ -1,7 +1,7 @@
 class Card {
 	constructor(cardObject) {
 		this.id = cardObject.id;
-		this.type = cardObject.type;
+		this.deck = cardObject.deck;
 		this.fields = cardObject.fields;
 		this.state = cardObject.state;
 

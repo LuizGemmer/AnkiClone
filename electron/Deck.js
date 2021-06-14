@@ -1,8 +1,8 @@
 const { Card } = require("./Card");
 
 class Deck {
-	constructor(cardList, deckProperties, configuration) {
-		this.cards = this.initCardsObject(cardList);
+	constructor(deckProperties, configuration) {
+		this.cards = {};
 		this.name = deckProperties.name;
 
 		this.configuration = configuration;
@@ -14,14 +14,6 @@ class Deck {
 
 		this.newCardsCount = this.card !== [] ? this.updateNewCardsCount() : 0;
 		this.dueCardsCount = this.card !== [] ? this.updateDueCardsCount() : 0;
-	}
-
-	initCardsObject(cardList) {
-		const cards = {};
-		for (let card of cardList) {
-			cards[card.id] = card;
-		}
-		return cards;
 	}
 
 	updateNewCardsCount() {
