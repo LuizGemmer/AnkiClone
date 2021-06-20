@@ -22,6 +22,7 @@ class Collection {
 			this.initializeDirs();
 		}
 		this.deckConfigs = this.getConfigs();
+		this.cards = this.initializeCards();
 		this.decks = this.initializeDecks();
 		this.cardId = this.getCardId();
 	}
@@ -51,7 +52,7 @@ class Collection {
 		const decks = this.getDecks();
 
 		collection = decks.map(
-			(deck) => new Deck(deck, this.deckConfigs[deck.configuration])
+			(deck) => new Deck(deck, this.deckConfigs[deck.configuration],  this.cards[deck.name])
 		);
 
 		return collection;
@@ -70,11 +71,20 @@ class Collection {
 	initializeCards() {
 		let cards = fs.readFileSync(path.join(this.PATHS.USER_CARDS, "cards.json"));
 		cards = JSON.parse(cards);
+		const cardsSortedByDeck = {}
 
 		for (let card of cards) {
-			card = new Card(card);
-			this.decks[card.deck].cards[card.id] = card;
+			card = new Card(card)
+			
+			if (!cardsSortedByDeck[card.deck]) {
+				cardsSortedByDeck[card.deck] = {}
+			}
+
+			cardsSortedByDeck[card.deck][card.id] = card
+
 		}
+
+		return cardsSortedByDeck
 	}
 
 	getConfigs() {

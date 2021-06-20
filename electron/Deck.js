@@ -1,8 +1,8 @@
 const { Card } = require("./Card");
 
 class Deck {
-	constructor(deckProperties, configuration) {
-		this.cards = {};
+	constructor(deckProperties, configuration, cards) {
+		this.cards = cards;
 		this.name = deckProperties.name;
 
 		this.configuration = configuration;
@@ -12,8 +12,8 @@ class Deck {
 			this.runRetirement();
 		}
 
-		this.newCardsCount = this.card !== [] ? this.updateNewCardsCount() : 0;
-		this.dueCardsCount = this.card !== [] ? this.updateDueCardsCount() : 0;
+		this.newCardsCount = this.cards !== [] ? this.updateNewCardsCount() : 0;
+		this.dueCardsCount = this.cards !== [] ? this.updateDueCardsCount() : 0;
 	}
 
 	updateNewCardsCount() {
