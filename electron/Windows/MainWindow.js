@@ -20,7 +20,7 @@ function createMainWindow(isDev) {
 	isDev ? win.webContents.openDevTools() : null;
 
 	const startUrl =
-		process.env.ELECTRON_START_URL ||
+		"http://localhost:3000" ||
 		path.normalize(`${__dirname}/../../index.html`);
 	win.loadURL(startUrl);
 

@@ -13,6 +13,7 @@ let win;
 
 app.whenReady().then(() => {
 	win = createMainWindow(isDev);
+	win.show();
 });
 
 app.on("window-all-closed", () => {
