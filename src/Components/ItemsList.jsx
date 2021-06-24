@@ -1,14 +1,36 @@
 import React, { Component } from "react";
 
-import { List, ListItem, ListItemText, withTheme } from "@material-ui/core";
+import { List, ListItem, withTheme } from "@material-ui/core";
 
 import Menu from "./Menu";
+import CardItem from "./CardItem";
 
 class ItemsList extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<List style={this.styles.list}>'</List>
+				<List style={this.styles.list}>
+					{this.getListItems().map((item, index) => (
+						<React.Fragment>
+							{this.props.value === 1 ? (
+								<CardItem
+									onClick={this.handleClick}
+									card={item}
+									key={item.id}
+								/>
+							) : (
+								<ListItem
+									button
+									key={item.name}
+									onClick={this.handleClick}
+								>
+									{item.name}
+								</ListItem>
+							)}
+						</React.Fragment>
+					))}
+				</List>
+
 				<Menu
 					theme={this.props.theme}
 					anchor={this.state.anchorEl}
@@ -34,15 +56,15 @@ class ItemsList extends Component {
 		} else if (this.props.value === 1) {
 			return this.getListOfCards(deck);
 		} else if (this.props.value === 2) {
-			return this.props.collection.deckConfigs;
+			return Object.values(this.props.collection.deckConfigs);
 		}
 	};
 
-	getListOfCards = (deck = undefined) => {
+	getListOfCards = (filter = undefined) => {
 		let cards = [];
 
 		for (let deck of this.props.collection.decks) {
-			if (deck.name === this.state.deck || deck === undefined) {
+			if (deck.name === this.state.deck || !filter) {
 				cards.push.apply(cards, Object.values(deck.cards));
 			}
 		}
@@ -50,12 +72,14 @@ class ItemsList extends Component {
 		return cards;
 	};
 
-	handleClick = (event) => {
-		this.setState({ target: event.target.innerText });
-		this.setState({ anchorEl: event.currentTarget });
+	handleClick = event => {
+		this.setState({
+			target: event.target.innerText,
+			anchorEl: event.currentTarget,
+		});
 	};
 
-	handleClose = (event) => {
+	handleClose = event => {
 		let text = event.target.innerText;
 
 		if (text === "See cards") {
@@ -71,21 +95,6 @@ class ItemsList extends Component {
 			margin: "5px 10px",
 		},
 	};
-}
-
-class CustomItem extends Component {
-	render() {
-		const { index, handleClick, value, item } = this.props;
-		return (
-			<ListItem key={index} button onClick={this.handleClick}>
-				<ListItemText>
-					{this.props.value === 0 || this.props.value === 2
-						? item.name
-						: `${item.id} - ${item.front.substr(0, 30)}... - ${item.deck}`}
-				</ListItemText>
-			</ListItem>
-		);
-	}
 }
 
 export default withTheme(ItemsList);

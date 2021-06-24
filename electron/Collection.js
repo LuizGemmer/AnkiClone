@@ -21,10 +21,13 @@ class Collection {
 		if (this.shouldInitializeDirs) {
 			this.initializeDirs();
 		}
+
 		this.deckConfigs = this.getConfigs();
 		this.cards = this.initializeCards();
 		this.decks = this.initializeDecks();
 		this.cardId = this.getCardId();
+		
+		this.cards = null;
 	}
 
 	initializeDirs() {
