@@ -35,6 +35,7 @@ class ItemsList extends Component {
 					theme={this.props.theme}
 					anchor={this.state.anchorEl}
 					handleClose={this.handleClose}
+					value={this.props.value}
 				/>
 			</React.Fragment>
 		);
