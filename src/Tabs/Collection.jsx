@@ -13,7 +13,7 @@ class Collection extends Component {
 		return (
 			<React.Fragment>
 				<Navbar
-					value={this.state.value}
+					value={this.state.navValue}
 					tabs={this.state.tabs}
 					handleChange={this.changeTab}
 				/>
@@ -23,6 +23,8 @@ class Collection extends Component {
 							changeTab={tab => this.setState({ value: tab })}
 							collection={this.state.collection}
 							value={this.state.value}
+							navValue={this.state.navValue}
+							returnTab={this.returnTab}
 						/>
 					</Paper>
 				</div>
@@ -43,11 +45,19 @@ class Collection extends Component {
 				{ name: "Deck Config", value: 2 },
 			],
 			value: 0,
+			navValue: 0,
 		};
 	}
 
 	changeTab = newTab => {
-		this.setState({ value: newTab });
+		if (newTab === 3) {
+			// Edit Tab
+			this.setState({ value: newTab });
+		} else this.setState({ value: newTab, navValue: newTab });
+	};
+
+	returnTab = () => {
+		this.setState({ value: this.state.navValue });
 	};
 
 	styles = {

@@ -4,6 +4,7 @@ import { List, ListItem, withTheme } from "@material-ui/core";
 
 import Menu from "./Menu";
 import CardItem from "./CardItem";
+import AddNewDeck from "../Tabs/AddNewDeck";
 
 class ItemsList extends Component {
 	render() {
@@ -18,6 +19,8 @@ class ItemsList extends Component {
 									card={item}
 									key={item.id}
 								/>
+							) : this.props.value === 3 ? (
+								this.openEditWindow()
 							) : (
 								<ListItem
 									button
@@ -58,7 +61,7 @@ class ItemsList extends Component {
 			return this.getListOfCards(deck);
 		} else if (this.props.value === 2) {
 			return Object.values(this.props.collection.deckConfigs);
-		}
+		} else return [1];
 	};
 
 	getListOfCards = (filter = undefined) => {
@@ -73,6 +76,24 @@ class ItemsList extends Component {
 		return cards;
 	};
 
+	openEditWindow = () => {
+		switch (this.props.navValue) {
+			case 0:
+				const editDeck = this.props.collection.decks.filter(
+					deck => deck.name === this.state.target
+				)[0];
+
+				return (
+					<AddNewDeck
+						editMode={true}
+						editDeck={editDeck}
+						returnTab={this.props.returnTab}
+					/>
+				);
+				break;
+		}
+	};
+
 	handleClick = event => {
 		this.setState({
 			target: event.target.innerText,
@@ -83,9 +104,14 @@ class ItemsList extends Component {
 	handleClose = event => {
 		let text = event.target.innerText;
 
-		if (text === "See cards") {
-			this.props.changeTab(1);
-			this.setState({ deck: this.state.target });
+		switch (text) {
+			case "See cards":
+				this.props.changeTab(1);
+				this.setState({ deck: this.state.target });
+				break;
+			case "Edit":
+				this.props.changeTab(3);
+				break;
 		}
 
 		this.setState({ anchorEl: null });

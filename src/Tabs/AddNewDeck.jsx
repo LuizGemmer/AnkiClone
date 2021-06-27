@@ -8,20 +8,23 @@ import useForm from "../useForm.js";
 import useIpc from "../useIpc.js";
 import { channels } from "../shared/Channels";
 
-export default function AddNewDeck() {
+export default function AddNewDeck(props) {
 	const { ipcConstructor, ipcSend } = useIpc(false);
 
 	const state = () => {
 		const configs = ipcConstructor(channels.GET_CONFIGS);
+		console.log(props.editDeck);
 		return {
 			select: {
 				deckConfig: {
 					options: configs,
-					value: configs[0],
+					value: props.editMode
+						? props.editDeck.configuration.name
+						: configs[0],
 				},
 			},
 			text: {
-				deckName: "",
+				deckName: props.editMode ? props.editDeck.name : "",
 			},
 		};
 	};
@@ -31,7 +34,13 @@ export default function AddNewDeck() {
 			name: values.text.deckName,
 			configuration: values.select.deckConfig.value,
 		};
-		ipcSend(channels.ADD_NEW_DECK, deckObject);
+
+		if (props.editMode) {
+			ipcSend(channels.EDIT_DECK, deckObject, props.editDeck.name);
+			props.returnTab();
+		} else {
+			ipcSend(channels.ADD_NEW_DECK, deckObject);
+		}
 	};
 
 	const { values, errors, handleChange, handleSubmit } = useForm(
@@ -55,7 +64,10 @@ export default function AddNewDeck() {
 				Selected={values.select.deckConfig.value}
 				options={values.select.deckConfig.options}
 			/>
-			<AddButton label="Add Deck" onClick={handleSubmit} />
+			<AddButton
+				label={props.editMode ? "Save" : "Add Deck"}
+				onClick={handleSubmit}
+			/>
 		</React.Fragment>
 	);
 }

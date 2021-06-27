@@ -11,5 +11,8 @@ module.exports = {
 		SAVE_REVIEW: "saveReview",
 		SAVE_DECK: "saveDeck",
 		GET_COLLECTION: "getCollection",
+		EDIT_DECK: "editDeck",
+		EDIT_CARD: "editCard",
+		EDIT_DECK_CONFIG: "editDeckConfig",
 	},
 };
