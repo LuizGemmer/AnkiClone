@@ -11,7 +11,7 @@ import { channels } from "../shared/Channels";
 export default function AddNewCard(props) {
 	const { ipcConstructor, ipcSend } = useIpc(false);
 	const decks = ipcConstructor(channels.GET_DECKS);
-	const initialState = getInitialState(decks);
+	const initialState = getInitialState(decks, props.editMode, props.editCard);
 
 	// Sends the card to the main process
 	const addNewCard = () => {
@@ -19,7 +19,7 @@ export default function AddNewCard(props) {
 			deck: select.value,
 			type: "Basic Card",
 			fields: values.text,
-			state: "new",
+			state: props.editMode ? props.editCard.state : "new",
 		};
 		ipcSend(channels.ADD_NEW_CARD, cardObject);
 	};
@@ -71,14 +71,26 @@ export default function AddNewCard(props) {
 				/>
 			</div>
 			<div>{getTextInputs()}</div>
-			<AddButton onClick={handleSubmit} label="Add Card" />
+			<AddButton
+				onClick={handleSubmit}
+				label={props.editMode ? "Save" : "Add Card"}
+			/>
 		</div>
 	);
 }
 
-const getInitialState = (decks) => {
+const getInitialState = (decks, editMode, editCard) => {
 	return {
-		select: { Deck: { name: "Deck", value: decks[0], options: decks } },
-		text: { Front: "", Back: "" },
+		select: {
+			Deck: {
+				name: "Deck",
+				value: editMode ? editCard.deck : decks[0],
+				options: decks,
+			},
+		},
+		text: {
+			Front: editMode ? editCard.fields.Front : "",
+			Back: editMode ? editCard.fields.Back : "",
+		},
 	};
 };

@@ -5,18 +5,20 @@ import { List, ListItem, withTheme } from "@material-ui/core";
 import Menu from "./Menu";
 import CardItem from "./CardItem";
 import AddNewDeck from "../Tabs/AddNewDeck";
+import AddNewCard from "../Tabs/AddNewCard";
 
 class ItemsList extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<List style={this.styles.list}>
+				<List style={this.styles.list} key={"test"}>
 					{this.getListItems().map((item, index) => (
 						<React.Fragment>
 							{this.props.value === 1 ? (
 								<CardItem
 									onClick={this.handleClick}
 									card={item}
+									id={item.id}
 									key={item.id}
 								/>
 							) : this.props.value === 3 ? (
@@ -24,7 +26,8 @@ class ItemsList extends Component {
 							) : (
 								<ListItem
 									button
-									key={item.name}
+									key={index}
+									id={item.name}
 									onClick={this.handleClick}
 								>
 									{item.name}
@@ -79,6 +82,7 @@ class ItemsList extends Component {
 	openEditWindow = () => {
 		switch (this.props.navValue) {
 			case 0:
+				// if a deck is being edited, takes this deck and opens a edit tab for ir
 				const editDeck = this.props.collection.decks.filter(
 					deck => deck.name === this.state.target
 				)[0];
@@ -91,12 +95,28 @@ class ItemsList extends Component {
 					/>
 				);
 				break;
+			case 1:
+				// Same for cards
+				let card = {};
+				this.props.collection.decks.forEach(deck => {
+					if (deck.cards[this.state.target]) {
+						card = deck.cards[this.state.target];
+					}
+				});
+
+				return (
+					<AddNewCard
+						editMode={true}
+						editCard={card}
+						returnTab={this.props.returnTab}
+					/>
+				);
 		}
 	};
 
 	handleClick = event => {
 		this.setState({
-			target: event.target.innerText,
+			target: event.target.id,
 			anchorEl: event.currentTarget,
 		});
 	};
@@ -106,8 +126,8 @@ class ItemsList extends Component {
 
 		switch (text) {
 			case "See cards":
+				// this.setState({ deck: this.state.target });
 				this.props.changeTab(1);
-				this.setState({ deck: this.state.target });
 				break;
 			case "Edit":
 				this.props.changeTab(3);

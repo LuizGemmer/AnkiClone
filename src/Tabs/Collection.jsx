@@ -20,7 +20,7 @@ class Collection extends Component {
 				<div style={this.styles.container}>
 					<Paper style={this.styles.list}>
 						<ItemsList
-							changeTab={tab => this.setState({ value: tab })}
+							changeTab={this.changeTab}
 							collection={this.state.collection}
 							value={this.state.value}
 							navValue={this.state.navValue}
@@ -53,11 +53,13 @@ class Collection extends Component {
 		if (newTab === 3) {
 			// Edit Tab
 			this.setState({ value: newTab });
-		} else this.setState({ value: newTab, navValue: newTab });
+		} else {
+			this.setState({ value: newTab, navValue: newTab });
+		}
 	};
 
 	returnTab = () => {
-		this.setState({ value: this.state.navValue });
+		this.changeTab(this.state.navValue);
 	};
 
 	styles = {

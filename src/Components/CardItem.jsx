@@ -8,10 +8,13 @@ export default class CardItem extends Component {
 				button
 				onClick={this.props.onClick}
 				style={this.styles.item}
+				id={this.props.id}
 			>
-				<span>{this.props.card.id}</span>
-				<span>{this.props.card.deck}</span>
-				<span>{this.props.card.fields.Front.substring(0, 25)}</span>
+				<span id={this.props.id}>{this.props.card.id}</span>
+				<span id={this.props.id}>{this.props.card.deck}</span>
+				<span id={this.props.id}>
+					{this.props.card.fields.Front.substring(0, 25)}
+				</span>
 			</ListItem>
 		);
 	}
