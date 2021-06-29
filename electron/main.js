@@ -1,4 +1,8 @@
 const { app, BrowserWindow, ipcMain } = require("electron");
+const {
+	default: installExtension,
+	REACT_DEVELOPER_TOOLS,
+} = require("electron-devtools-installer");
 
 const { channels } = require("../src/shared/Channels");
 const { Collection } = require("./Collection");
@@ -12,6 +16,10 @@ const isDev = false;
 let win;
 
 app.whenReady().then(() => {
+	installExtension(REACT_DEVELOPER_TOOLS)
+		.then(name => console.log(`Added Extension:  ${name}`))
+		.catch(err => console.log("An error occurred: ", err));
+
 	win = createMainWindow(isDev);
 	win.show();
 });
@@ -30,7 +38,7 @@ app.on("activate", () => {
 });
 
 //			 Init window events
-ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
+ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, e => {
 	let returnValue = [];
 
 	for (let deck of collection.decks) {
@@ -39,12 +47,12 @@ ipcMain.on(channels.GET_DECKS_NAMES_DUE_NEW, (e) => {
 	e.returnValue = returnValue;
 });
 
-ipcMain.on(channels.GET_DECKS, (e) => {
-	const decks = collection.decks.map((deck) => deck.name);
+ipcMain.on(channels.GET_DECKS, e => {
+	const decks = collection.decks.map(deck => deck.name);
 	e.returnValue = decks;
 });
 
-ipcMain.on(channels.GET_CONFIGS, (e) => {
+ipcMain.on(channels.GET_CONFIGS, e => {
 	const configs = [];
 
 	for (let config in collection.deckConfigs) {
@@ -90,7 +98,7 @@ ipcMain.on(channels.GET_DECK_CONFIG, (e, name) => {
 });
 
 //			Collection Tab Events
-ipcMain.on(channels.GET_COLLECTION, (e) => {
+ipcMain.on(channels.GET_COLLECTION, e => {
 	e.returnValue = collection;
 });
 
