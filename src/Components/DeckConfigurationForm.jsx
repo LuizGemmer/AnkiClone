@@ -9,22 +9,10 @@ import useForm from "../useForm";
 import useIpc from "../useIpc";
 import { channels } from "../shared/Channels";
 
-const form = {
-	text: {
-		configName: "",
-		dueCardsMaxPerReview: 1000,
-		newCardsMaxPerReview: 1000,
-		retirementAgeInDays: 120,
-	},
-	checkbox: {
-		useRetirement: true,
-		showReaminingCardsInReview: true,
-		showTimerInReview: true,
-	},
-};
-
 export default function DeckConfigurationForm(props) {
 	const { ipcSend } = useIpc();
+
+	const form = getInitialState(props.editMode, props.editConfig);
 
 	const submit = () => {
 		const {
@@ -41,13 +29,23 @@ export default function DeckConfigurationForm(props) {
 			retirementAgeInDays,
 		};
 
-		ipcSend(channels.ADD_DECK_CONFIG, deckConfig);
+		if (props.editMode) {
+			ipcSend(channels.EDIT_DECK_CONFIG, deckConfig);
+			props.returnTab();
+		} else {
+			ipcSend(channels.ADD_DECK_CONFIG, deckConfig);
+		}
 	};
 
-	const { values, errors, handleChange, handleSubmit } = useForm(form, submit);
+	const { values, errors, handleChange, handleSubmit } = useForm(
+		form,
+		submit
+	);
 
 	return (
-		<div>
+		<div
+			style={props.editMode ? { height: "calc(100% + 50px)" } : undefined}
+		>
 			<div>
 				<TextInput
 					name="configName"
@@ -120,4 +118,24 @@ const styles = {
 
 		margin: "10px 0",
 	},
+};
+
+const getInitialState = (editMode, editConfig) => {
+	return {
+		text: {
+			configName: editMode ? editConfig.name : "",
+			dueCardsMaxPerReview: editMode ? editConfig.maxDueCardsDay : 1000,
+			newCardsMaxPerReview: editMode ? editConfig.maxNewCardsDay : 1000,
+			retirementAgeInDays: editMode
+				? editConfig.retirementAgeInDays
+				: 120,
+		},
+		checkbox: {
+			useRetirement: editMode ? editConfig.useRetirement : true,
+			showReaminingCardsInReview: editMode
+				? editConfig.showReaminingCardsInReview
+				: true,
+			showTimerInReview: editMode ? editConfig.showTimerInReview : true,
+		},
+	};
 };

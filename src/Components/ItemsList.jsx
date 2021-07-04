@@ -6,12 +6,13 @@ import Menu from "./Menu";
 import CardItem from "./CardItem";
 import AddNewDeck from "../Tabs/AddNewDeck";
 import AddNewCard from "../Tabs/AddNewCard";
+import DeckConfigurationForm from "./DeckConfigurationForm";
 
 class ItemsList extends Component {
 	render() {
 		return (
 			<React.Fragment>
-				<List style={this.styles.list} key={"test"}>
+				<List style={this.styles.list} key={this.props.value}>
 					{this.getListItems().map((item, index) => (
 						<React.Fragment>
 							{this.props.value === 1 ? (
@@ -94,7 +95,6 @@ class ItemsList extends Component {
 						returnTab={this.props.returnTab}
 					/>
 				);
-				break;
 			case 1:
 				// Same for cards
 				let card = {};
@@ -111,6 +111,20 @@ class ItemsList extends Component {
 						returnTab={this.props.returnTab}
 					/>
 				);
+			case 2:
+				let editConfig =
+					this.props.collection.deckConfigs[this.state.target];
+				console.log(editConfig);
+
+				return (
+					<DeckConfigurationForm
+						editMode={true}
+						editConfig={editConfig}
+						returnTab={this.props.returnTab}
+					/>
+				);
+			default:
+				return;
 		}
 	};
 
@@ -132,6 +146,8 @@ class ItemsList extends Component {
 			case "Edit":
 				this.props.changeTab(3);
 				break;
+			default:
+				return;
 		}
 
 		this.setState({ anchorEl: null });

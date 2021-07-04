@@ -21,7 +21,13 @@ export default function AddNewCard(props) {
 			fields: values.text,
 			state: props.editMode ? props.editCard.state : "new",
 		};
-		ipcSend(channels.ADD_NEW_CARD, cardObject);
+
+		if (props.editMode) {
+			ipcSend(channels.EDIT_CARD, cardObject);
+			props.returnTab();
+		} else {
+			ipcSend(channels.ADD_NEW_CARD, cardObject);
+		}
 	};
 
 	// Handle the form's basic functionalities
