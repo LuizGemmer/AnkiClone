@@ -17,8 +17,8 @@ class Collection extends Component {
 					tabs={this.state.tabs}
 					handleChange={this.changeTab}
 				/>
-				<div style={this.styles.container}>
-					<Paper style={this.styles.list}>
+				<div style={this.styles().container}>
+					<Paper style={this.styles().list}>
 						<ItemsList
 							changeTab={this.changeTab}
 							collection={this.state.collection}
@@ -62,7 +62,7 @@ class Collection extends Component {
 		this.changeTab(this.state.navValue);
 	};
 
-	styles = {
+	styles = () => ({
 		container: {
 			height: "calc(100vh - 96px)",
 			width: "100vw",
@@ -74,9 +74,10 @@ class Collection extends Component {
 		},
 		list: {
 			maxHeight: "100%",
-			overflow: "auto",
+			height: this.state.value === 3 ? "65%" : "auto",
+			overflow: this.state.value === 3 ? "hidden" : "auto",
 		},
-	};
+	});
 }
 
 export default withTheme(Collection);

@@ -43,9 +43,7 @@ export default function DeckConfigurationForm(props) {
 	);
 
 	return (
-		<div
-			style={props.editMode ? { height: "calc(100% + 50px)" } : undefined}
-		>
+		<div>
 			<div>
 				<TextInput
 					name="configName"
@@ -105,7 +103,10 @@ export default function DeckConfigurationForm(props) {
 					onChange={handleChange}
 				/>
 			</div>
-			<AddButton label="Add Config" onClick={handleSubmit} />
+			<AddButton
+				label={props.editMode ? "Save" : "Add Config"}
+				onClick={handleSubmit}
+			/>
 		</div>
 	);
 }

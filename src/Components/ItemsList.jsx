@@ -114,7 +114,6 @@ class ItemsList extends Component {
 			case 2:
 				let editConfig =
 					this.props.collection.deckConfigs[this.state.target];
-				console.log(editConfig);
 
 				return (
 					<DeckConfigurationForm
@@ -156,6 +155,8 @@ class ItemsList extends Component {
 	styles = {
 		list: {
 			margin: "5px 10px",
+			height: "100%",
+			boxSizing: "border-box",
 		},
 	};
 }
